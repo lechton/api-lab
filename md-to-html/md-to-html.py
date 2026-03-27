@@ -268,11 +268,13 @@ class MarkdownConverter:
     # -- Inline formatting ----------------------------------------------------
 
     def _convert_inline_formatting(self, text: str) -> str:
+        # Inline code MUST be processed first — protects *, _, ~ inside backticks
+        # from being consumed by the emphasis/strikethrough regexes below.
+        text = self.INLINE_CODE.sub(lambda m: f"<code>{html.escape(m.group(1))}</code>", text)
         text = self.BOLD_ITALIC.sub(lambda m: f"<strong><em>{m.group(1) or m.group(2)}</em></strong>", text)
         text = self.BOLD.sub(lambda m: f"<strong>{m.group(1) or m.group(2)}</strong>", text)
         text = self.ITALIC.sub(lambda m: f"<em>{m.group(1) or m.group(2)}</em>", text)
         text = self.STRIKETHROUGH.sub(r"<del>\1</del>", text)
-        text = self.INLINE_CODE.sub(lambda m: f"<code>{html.escape(m.group(1))}</code>", text)
         return text
 
     def _inline(self, text: str) -> str:

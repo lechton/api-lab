@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fastapi Lecture 022</title>
+    <style>
+/* ==========================================================================
+   A4 Git Codewrap Plus — Print Edition 02
+   ---------------------------------------------------------------------------
+   PrinceXML-compatible. Designed for PRINTED output — laser / inkjet.
+
+   Table style: Rounded card with dark-gray header (#4a4a4a), soft shadow,
+   zebra striping (#f2f2f2), no vertical borders, generous padding.
+
+   Fonts : Inter (body + headings), IBM Plex Sans (tables), JetBrains Mono (code)
+   Palette: black, white, print-tested grays
+   Page   : A4 (210mm x 297mm)
+   ========================================================================== */
+
+/* --- Google Fonts -------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700&family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* ==========================================================================
+   PAGE SETUP — Alternating margins for book binding
+   :right (odd/recto) → binding on the LEFT  → larger left margin
+   :left  (even/verso) → binding on the RIGHT → larger right margin
+   ========================================================================== */
+
+@page {
+    size: A4;
+    margin: 22mm 20mm 24mm 20mm;
+
+    @bottom-center {
+        content: counter(page);
+        font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 9pt;
+        color: #888888;
+    }
+}
+
+@page :right {
+    margin-left: 28mm;
+    margin-right: 18mm;
+
+    @bottom-right {
+        content: counter(page);
+        font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 9pt;
+        color: #888888;
+    }
+    @bottom-center { content: normal; }
+
+    @top-right {
+        content: string(chapter-title);
+        font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 7.5pt;
+        font-weight: 600;
+        color: #aaaaaa;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        border-bottom: 0.5pt solid #dddddd;
+        padding-bottom: 3pt;
+    }
+}
+
+@page :left {
+    margin-left: 18mm;
+    margin-right: 28mm;
+
+    @bottom-left {
+        content: counter(page);
+        font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 9pt;
+        color: #888888;
+    }
+    @bottom-center { content: normal; }
+
+    @top-left {
+        content: string(doc-title);
+        font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 7.5pt;
+        font-weight: 600;
+        color: #aaaaaa;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        border-bottom: 0.5pt solid #dddddd;
+        padding-bottom: 3pt;
+    }
+}
+
+/* First page — clean: no running header, centred page number */
+@page :first {
+    @top-left    { content: normal; }
+    @top-right   { content: normal; }
+    @bottom-left { content: normal; }
+    @bottom-right{ content: normal; }
+    @bottom-center {
+        content: counter(page);
+        font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 9pt;
+        color: #888888;
+    }
+}
+
+/* ==========================================================================
+   RESET & BASE
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 11.5pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+body {
+    font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 11.5pt;
+    font-weight: 500;
+    line-height: 1.7;
+    color: #000000;
+    background-color: #ffffff;
+    max-width: 210mm;
+    margin: 0 auto;
+    padding: 22mm 20mm 24mm 20mm;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1, "liga" 1;
+}
+
+/* ==========================================================================
+   PRINCE-SPECIFIC — Running headers & PDF bookmarks
+   ========================================================================== */
+
+h1 { string-set: doc-title content();     prince-bookmark-level: 1; }
+h2 { string-set: chapter-title content();  prince-bookmark-level: 2; }
+h3 { prince-bookmark-level: 3; }
+h4 { prince-bookmark-level: 4; }
+h5 { prince-bookmark-level: 5; }
+h6 { prince-bookmark-level: 6; }
+
+/* ==========================================================================
+   HEADINGS — Clear hierarchy, generous size, strong weight
+   ========================================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #000000;
+    margin-top: 1.6em;
+    margin-bottom: 0.5em;
+    font-weight: 800;
+    line-height: 1.25;
+    text-align: left;
+    page-break-after: avoid;
+    break-after: avoid;
+}
+
+/* H1 — Chapter / Document title */
+h1 {
+    font-size: 28pt;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    color: #000000;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    padding-bottom: 10pt;
+    border-bottom: 3pt solid #000000;
+    page-break-before: always;
+    break-before: page;
+}
+
+/* First H1 in document — don't force a blank opening page */
+body > h1:first-child {
+    page-break-before: auto;
+    break-before: auto;
+}
+
+/* H2 — Section title */
+h2 {
+    font-size: 20pt;
+    font-weight: 800;
+    color: #000000;
+    padding-bottom: 5pt;
+    border-bottom: 1pt solid #888888;
+    page-break-before: always;
+    break-before: page;
+}
+
+/* H3 */
+h3 {
+    font-size: 15pt;
+    font-weight: 700;
+    color: #000000;
+}
+
+/* H4 */
+h4 {
+    font-size: 13pt;
+    font-weight: 700;
+    color: #000000;
+}
+
+/* H5 */
+h5 {
+    font-size: 11pt;
+    font-weight: 800;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* H6 */
+h6 {
+    font-size: 10pt;
+    font-weight: 800;
+    color: #1a1a1a;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   PARAGRAPHS & INLINE TEXT
+   ========================================================================== */
+
+p {
+    margin: 0 0 0.8em 0;
+    orphans: 3;
+    widows: 3;
+}
+
+strong, b {
+    font-weight: 800;
+    color: #000000;
+}
+
+em, i {
+    font-style: italic;
+}
+
+small {
+    font-size: 10pt;
+}
+
+mark {
+    background-color: #e8e8e8;
+    padding: 1pt 3pt;
+}
+
+abbr[title] {
+    border-bottom: 1pt dotted #888888;
+    text-decoration: none;
+}
+
+/* ==========================================================================
+   LINKS
+   ========================================================================== */
+
+a {
+    color: #000000;
+    text-decoration: underline;
+    text-decoration-color: #999999;
+    text-underline-offset: 2pt;
+}
+
+a:hover {
+    text-decoration-color: #000000;
+}
+
+/* ==========================================================================
+   LISTS — Indented from both sides for visual breathing room
+   ========================================================================== */
+
+ul, ol {
+    margin: 0.4em 12pt 1em 12pt;
+    padding-left: 2em;
+}
+
+ul ul, ol ol, ul ol, ol ul {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0.15em;
+    margin-bottom: 0.15em;
+}
+
+li {
+    margin-bottom: 0.3em;
+    line-height: 1.65;
+}
+
+li > p {
+    margin-bottom: 0.3em;
+}
+
+ul { list-style-type: disc; }
+ul ul { list-style-type: circle; }
+ul ul ul { list-style-type: square; }
+
+/* Task lists */
+ul.task-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.task-list-item {
+    position: relative;
+    padding-left: 1.75em;
+}
+
+.task-list-item input[type="checkbox"] {
+    position: absolute;
+    left: 0;
+    top: 0.3em;
+    margin: 0;
+}
+
+/* ==========================================================================
+   BLOCKQUOTES — Indented like lists, left rule + light background
+   ========================================================================== */
+
+blockquote {
+    margin: 1em 12pt 1em 12pt;
+    padding: 10pt 14pt 10pt 16pt;
+    border-left: 3pt solid #bbbbbb;
+    background-color: #fafafa;
+    color: #000000;
+    page-break-inside: avoid;
+}
+
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child  { margin-bottom: 0; }
+
+blockquote blockquote {
+    margin-left: 0;
+    margin-right: 0;
+    border-left-color: #dddddd;
+    background-color: #f5f5f5;
+}
+
+/* ==========================================================================
+   CODE — Full-width (flush to margins) for maximum line length
+   ========================================================================== */
+
+code {
+    font-family: "JetBrains Mono", "SF Mono", "Consolas", "Menlo", monospace;
+    font-size: 10pt;
+    font-weight: 500;
+    padding: 1.5pt 5pt;
+    background-color: #f0f0f0;
+    border: 0.5pt solid #d5d5d5;
+    border-radius: 3pt;
+    color: #000000;
+}
+
+pre {
+    margin: 1em 0;
+    padding: 14pt 16pt;
+    background-color: #f5f5f5;
+    border: 1pt solid #d5d5d5;
+    border-radius: 4pt;
+    line-height: 1.5;
+    page-break-inside: avoid;
+    /* Wrap long lines — never overflow the page */
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+pre code {
+    display: inline;
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    font-weight: 500;
+    font-size: 9.5pt;
+    color: #000000;
+    line-height: inherit;
+    white-space: inherit;
+    word-wrap: inherit;
+    overflow-wrap: inherit;
+}
+
+/* ==========================================================================
+   TABLES — Rounded card with dark header, subtle shadow, zebra rows
+   ---------------------------------------------------------------------------
+   Adapted from reference CSS. border-collapse: separate allows rounded
+   corners. box-shadow gives a soft card feel (Prince supports this).
+   Indented from both sides like lists.
+   ========================================================================== */
+
+table {
+    width: calc(100% - 24pt);
+    max-width: calc(100% - 24pt);
+    margin: 1.4em 12pt;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 12pt;
+    overflow: hidden;
+    font-family: "IBM Plex Sans", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 9.5pt;
+    background-color: #ffffff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    /* Thin border helps Prince render the rounded outline */
+    border: 0.5pt solid #d0d0d0;
+    page-break-inside: avoid;
+}
+
+/* Explicitly round the four corner cells for Prince compatibility */
+thead th:first-child {
+    border-top-left-radius: 12pt;
+}
+
+thead th:last-child {
+    border-top-right-radius: 12pt;
+}
+
+tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 12pt;
+}
+
+tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 12pt;
+}
+
+thead th {
+    background-color: #4a4a4a;
+    color: #ffffff;
+    font-size: 8.5pt;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 10pt 14pt;
+    text-align: left;
+    border: none;
+    white-space: nowrap;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tbody td {
+    padding: 10pt 14pt;
+    font-size: 9.5pt;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #333333;
+    vertical-align: top;
+    border: none;
+    border-bottom: 1pt solid #e0e0e0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Inline code inside tables */
+table code,
+td code {
+    font-family: "JetBrains Mono", "SF Mono", "Consolas", monospace;
+    font-size: 8.5pt;
+    font-weight: 500;
+    background-color: #e8e8e8;
+    border: none;
+    border-radius: 4pt;
+    padding: 2pt 6pt;
+    color: #000000;
+}
+
+/* Code blocks inside table cells */
+table .code-block {
+    font-family: "JetBrains Mono", "SF Mono", "Consolas", monospace;
+    font-size: 8pt;
+    line-height: 1.6;
+    background-color: #e8e8e8;
+    border: none;
+    border-left: 3pt solid #4a4a4a;
+    border-radius: 0;
+    padding: 6pt 10pt;
+    margin-top: 4pt;
+    white-space: pre;
+    display: block;
+    color: #000000;
+}
+
+/* Tags — utility classes for status labels in cells */
+.tag {
+    display: inline-block;
+    font-size: 7.5pt;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2pt 8pt;
+    border-radius: 3pt;
+}
+
+.tag-ok   { background-color: #e8e8e8; border: 1pt solid #aaaaaa; color: #222222; }
+.tag-warn { background-color: #d9d9d9; border: 1pt dashed #666666; color: #222222; }
+.tag-off  { background-color: #4a4a4a; color: #ffffff; border: 1pt solid #4a4a4a; }
+
+.cell-note {
+    font-size: 8pt;
+    color: #666666;
+    font-style: italic;
+    margin-top: 3pt;
+}
+
+caption {
+    caption-side: bottom;
+    font-size: 9pt;
+    font-style: italic;
+    color: #555555;
+    padding-top: 6pt;
+    text-align: left;
+    margin-left: 12pt;
+}
+
+/* ==========================================================================
+   HORIZONTAL RULE
+   ========================================================================== */
+
+hr {
+    border: none;
+    border-top: 1pt solid #cccccc;
+    margin: 1.8em 0;
+}
+
+/* ==========================================================================
+   IMAGES & FIGURES
+   ========================================================================== */
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.2em auto;
+}
+
+figure {
+    margin: 1.5em 0;
+    text-align: center;
+    page-break-inside: avoid;
+}
+
+figcaption {
+    font-size: 9.5pt;
+    font-style: italic;
+    color: #555555;
+    margin-top: 6pt;
+}
+
+/* ==========================================================================
+   DEFINITION LISTS — Indented like lists
+   ========================================================================== */
+
+dl {
+    margin: 1em 12pt;
+}
+
+dt {
+    font-weight: 800;
+    font-size: 11pt;
+    margin-top: 0.8em;
+    color: #000000;
+}
+
+dd {
+    margin-left: 2em;
+    margin-bottom: 0.4em;
+}
+
+/* ==========================================================================
+   KEYBOARD KEYS
+   ========================================================================== */
+
+kbd {
+    display: inline-block;
+    padding: 2pt 6pt;
+    font-family: "JetBrains Mono", "SF Mono", "Consolas", monospace;
+    font-size: 9pt;
+    color: #000000;
+    font-weight: 500;
+    background-color: #f0f0f0;
+    border: 0.5pt solid #bbbbbb;
+    border-bottom-width: 1.5pt;
+    border-radius: 3pt;
+}
+
+/* ==========================================================================
+   FOOTNOTES
+   ========================================================================== */
+
+.footnotes {
+    font-size: 10pt;
+    color: #1a1a1a;
+    border-top: 0.5pt solid #cccccc;
+    padding-top: 12pt;
+    margin-top: 2em;
+}
+
+sup {
+    font-size: 8pt;
+    line-height: 0;
+}
+
+sup a {
+    text-decoration: none;
+    color: #000000;
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   ALERTS / NOTE BOXES — Indented, left border + light fill
+   ========================================================================== */
+
+.markdown-alert {
+    padding: 10pt 14pt;
+    margin: 1em 12pt;
+    border-left: 3pt solid;
+    background-color: #f7f7f7;
+    font-size: 11pt;
+}
+
+.markdown-alert-note      { border-left-color: #888888; }
+.markdown-alert-tip        { border-left-color: #666666; }
+.markdown-alert-important  { border-left-color: #333333; }
+.markdown-alert-warning    { border-left-color: #999999; }
+.markdown-alert-caution    { border-left-color: #444444; }
+
+/* ==========================================================================
+   TABLE OF CONTENTS
+   ========================================================================== */
+
+.toc {
+    border: 1pt solid #cccccc;
+    padding: 14pt 18pt;
+    margin: 1.5em 12pt;
+    page-break-inside: avoid;
+}
+
+.toc ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.toc ul ul {
+    padding-left: 1.5em;
+}
+
+.toc li {
+    margin-bottom: 0.2em;
+    font-size: 11pt;
+}
+
+.toc a {
+    text-decoration: none;
+    color: #000000;
+}
+
+/* Prince-specific: dot leaders for TOC */
+.toc a::after {
+    content: leader('.') target-counter(attr(href), page);
+    font-size: 10pt;
+    color: #999999;
+}
+
+/* ==========================================================================
+   SUMMARY / DETAILS
+   ========================================================================== */
+
+details {
+    margin: 1em 12pt;
+    padding: 0.5em 1em;
+    border: 1pt solid #d5d5d5;
+    border-radius: 3pt;
+}
+
+summary {
+    cursor: pointer;
+    font-weight: 800;
+    color: #000000;
+    font-size: 11pt;
+    display: list-item;
+    padding: 0.2em 0;
+}
+
+details[open] summary {
+    margin-bottom: 0.5em;
+    border-bottom: 0.5pt solid #dddddd;
+    padding-bottom: 0.5em;
+}
+
+/* ==========================================================================
+   PRINT SPECIFIC
+   ========================================================================== */
+
+@media print {
+    body {
+        padding: 0;
+        background: none;
+    }
+
+    a[href^="http"]::after {
+        content: " [" attr(href) "]";
+        font-size: 8.5pt;
+        color: #777777;
+        word-break: break-all;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        page-break-after: avoid;
+        break-after: avoid;
+    }
+
+    pre, blockquote, table, figure, img {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    thead { display: table-header-group; }
+    tr    { page-break-inside: avoid; }
+
+    p {
+        orphans: 3;
+        widows: 3;
+    }
+}
+
+    </style>
+</head>
+<body>
+<h1 id="python-lists-lecture-notes">Python Lists – Lecture Notes</h1>
+
+<p><strong>Course:</strong> FastAPI - The Complete Course 2026 (Beginner + Advanced)<br>
+<strong>Lecture 22:</strong> Lists in Python (~9 min)</p>
+
+<hr>
+<h2 id="what-is-a-list">What is a List?</h2>
+
+<p>A list is a collection of data stored in a single variable. Unlike a regular variable that holds one value, a list holds <strong>multiple values</strong>.</p>
+
+<p>Lists are created with <strong>square brackets <code>[]</code></strong>, with elements separated by commas.</p>
+
+<pre><code class="language-python">my_list = [80, 96, 72, 100, 8]
+print(my_list)  # [80, 96, 72, 100, 8]</code></pre>
+Lists can hold any type — integers, strings, etc.
+
+<pre><code class="language-python">people_list = [&quot;Eric&quot;, &quot;Adele&quot;, &quot;Jeff&quot;]
+print(people_list)  # [&#x27;Eric&#x27;, &#x27;Adele&#x27;, &#x27;Jeff&#x27;]</code></pre>
+<hr>
+<h2 id="indexing">Indexing</h2>
+
+<p>Every element in a list has an <strong>index starting at 0</strong>.</p>
+
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Index</th>
+<th style="text-align:left">0</th>
+<th style="text-align:left">1</th>
+<th style="text-align:left">2</th>
+<th style="text-align:left">3</th>
+<th style="text-align:left">4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Value</td>
+<td style="text-align:left">80</td>
+<td style="text-align:left">96</td>
+<td style="text-align:left">72</td>
+<td style="text-align:left">100</td>
+<td style="text-align:left">8</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code class="language-python">print(my_list[0])  # 80
+print(my_list[4])  # 8
+print(my_list[5])  # ❌ IndexError: list index out of range</code></pre>
+<strong>Negative indexing:</strong> <code>-1</code> always grabs the <strong>last</strong> element.
+
+<pre><code class="language-python">print(people_list[-1])  # &quot;Jeff&quot;</code></pre>
+<strong>Reassigning by index:</strong>
+
+<pre><code class="language-python">people_list[0] = &quot;Mel&quot;
+print(people_list[0])  # &quot;Mel&quot;</code></pre>
+<hr>
+<h2 id="length">Length</h2>
+
+<p>Use <code>len()</code> to get the number of elements.</p>
+
+<pre><code class="language-python">print(len(people_list))  # 3</code></pre>
+<blockquote>
+<p>The length is 3 even though the highest index is 2.</p>
+</blockquote>
+
+<hr>
+<h2 id="slicing">Slicing</h2>
+
+<p>Slicing extracts a subset of the list using the syntax <code>[start:stop]</code>. The <strong>start</strong> index is included, the <strong>stop</strong> index is <strong>not</strong>.</p>
+
+<pre><code class="language-python">print(people_list[0:2])  # [&#x27;Eric&#x27;, &#x27;Adele&#x27;]  — stops before index 2
+
+print(my_list[0:2])      # [80, 96]
+print(my_list[0:4])      # [80, 96, 72, 100]  — stops before index 4
+print(my_list[2:4])      # [72, 100]           — starts at index 2</code></pre>
+<hr>
+<h2 id="inserting-deleting">Inserting & Deleting</h2>
+
+<h3 id="append-add-to-the-end"><code>append()</code> — add to the end</h3>
+
+<pre><code class="language-python">my_list.append(1000)
+print(my_list)  # [80, 96, 72, 100, 8, 1000]</code></pre>
+<h3 id="insertindex-value-add-at-a-specific-position"><code>insert(index, value)</code> — add at a specific position</h3>
+
+<pre><code class="language-python">my_list.insert(2, 1000)
+print(my_list)  # [80, 96, 1000, 72, 100, 8, 1000]</code></pre>
+All elements from that index onward shift to the right.
+
+<h3 id="removevalue-delete-by-value"><code>remove(value)</code> — delete by <strong>value</strong></h3>
+
+<pre><code class="language-python">my_list.remove(8)
+# Removes the element whose value is 8</code></pre>
+<h3 id="popindex-delete-by-index"><code>pop(index)</code> — delete by <strong>index</strong></h3>
+
+<pre><code class="language-python">my_list.pop(0)
+# Removes the element at index 0 (i.e. 80)</code></pre>
+<hr>
+<h2 id="sorting">Sorting</h2>
+
+<p><code>sort()</code> arranges numeric values from least to greatest (in-place).</p>
+
+<pre><code class="language-python">my_list.sort()
+print(my_list)  # [72, 96, 100, 1000, 1000]</code></pre>
+<hr>
+<h2 id="key-takeaways">Key Takeaways</h2>
+
+<ol>
+<li><strong>Indexing starts at 0</strong> — the most common beginner mistake.</li>
+<li><strong>Negative index <code>-1</code></strong> is a shortcut to the last element.</li>
+<li><strong>Slicing <code>[start:stop]</code></strong> includes <code>start</code> but <strong>excludes</strong> <code>stop</code>.</li>
+<li><strong><code>remove()</code> matches by value</strong>, <strong><code>pop()</code> matches by index</strong> — know the difference.</li>
+<li><strong><code>append()</code></strong> adds to the end; <strong><code>insert()</code></strong> adds at any position.</li>
+<li><strong><code>sort()</code></strong> mutates the list in place.</li>
+<li>Lists are used constantly in real development — this is a foundational concept.</li>
+</ol>
+</body>
+</html>

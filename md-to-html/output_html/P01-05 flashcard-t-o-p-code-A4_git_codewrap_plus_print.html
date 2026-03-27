@@ -1,0 +1,2248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P01 05 Flashcard T O P Code</title>
+    <style>
+/* ==========================================================================
+   A4 Git Codewrap Plus — Print Edition
+   ---------------------------------------------------------------------------
+   PrinceXML-compatible. Designed for PRINTED output — laser / inkjet.
+   Every decision here is made for toner on paper, not pixels on screen.
+
+   Key differences from the screen edition:
+     - Tables: high-contrast solid borders, dark header, compact font
+     - Lists & tables: indented from both margins for visual breathing room
+     - Code blocks: flush to margins (full width for maximum line length)
+     - No gradients, no box-shadows, no rounded corners on tables
+     - All colours tested for print fidelity (no washed-out grays)
+
+   Fonts : Inter (body + headings), IBM Plex Sans (tables), JetBrains Mono (code)
+   Palette: black, white, print-tested grays
+   Page   : A4 (210mm x 297mm)
+   ========================================================================== */
+
+/* --- Google Fonts -------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700&family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* ==========================================================================
+   PAGE SETUP — Alternating margins for book binding
+   :right (odd/recto) → binding on the LEFT  → larger left margin
+   :left  (even/verso) → binding on the RIGHT → larger right margin
+   ========================================================================== */
+
+@page {
+    size: A4;
+    margin: 22mm 20mm 24mm 20mm;
+
+    @bottom-center {
+        content: counter(page);
+        font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 9pt;
+        color: #888888;
+    }
+}
+
+@page :right {
+    margin-left: 28mm;
+    margin-right: 18mm;
+
+    @bottom-right {
+        content: counter(page);
+        font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 9pt;
+        color: #888888;
+    }
+    @bottom-center { content: normal; }
+
+    @top-right {
+        content: string(chapter-title);
+        font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 7.5pt;
+        font-weight: 600;
+        color: #aaaaaa;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        border-bottom: 0.5pt solid #dddddd;
+        padding-bottom: 3pt;
+    }
+}
+
+@page :left {
+    margin-left: 18mm;
+    margin-right: 28mm;
+
+    @bottom-left {
+        content: counter(page);
+        font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 9pt;
+        color: #888888;
+    }
+    @bottom-center { content: normal; }
+
+    @top-left {
+        content: string(doc-title);
+        font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 7.5pt;
+        font-weight: 600;
+        color: #aaaaaa;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        border-bottom: 0.5pt solid #dddddd;
+        padding-bottom: 3pt;
+    }
+}
+
+/* First page — clean: no running header, centred page number */
+@page :first {
+    @top-left    { content: normal; }
+    @top-right   { content: normal; }
+    @bottom-left { content: normal; }
+    @bottom-right{ content: normal; }
+    @bottom-center {
+        content: counter(page);
+        font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 9pt;
+        color: #888888;
+    }
+}
+
+/* ==========================================================================
+   RESET & BASE
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 11.5pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+body {
+    font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 11.5pt;
+    font-weight: 500;
+    line-height: 1.7;
+    color: #000000;
+    background-color: #ffffff;
+    max-width: 210mm;
+    margin: 0 auto;
+    padding: 22mm 20mm 24mm 20mm;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1, "liga" 1;
+}
+
+/* ==========================================================================
+   PRINCE-SPECIFIC — Running headers & PDF bookmarks
+   ========================================================================== */
+
+h1 { string-set: doc-title content();     prince-bookmark-level: 1; }
+h2 { string-set: chapter-title content();  prince-bookmark-level: 2; }
+h3 { prince-bookmark-level: 3; }
+h4 { prince-bookmark-level: 4; }
+h5 { prince-bookmark-level: 5; }
+h6 { prince-bookmark-level: 6; }
+
+/* ==========================================================================
+   HEADINGS — Clear hierarchy, generous size, strong weight
+   ========================================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #000000;
+    margin-top: 1.6em;
+    margin-bottom: 0.5em;
+    font-weight: 800;
+    line-height: 1.25;
+    text-align: left;
+    page-break-after: avoid;
+    break-after: avoid;
+}
+
+/* H1 — Chapter / Document title */
+h1 {
+    font-size: 28pt;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    color: #000000;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    padding-bottom: 10pt;
+    border-bottom: 3pt solid #000000;
+    page-break-before: always;
+    break-before: page;
+}
+
+/* First H1 in document — don't force a blank opening page */
+body > h1:first-child {
+    page-break-before: auto;
+    break-before: auto;
+}
+
+/* H2 — Section title */
+h2 {
+    font-size: 20pt;
+    font-weight: 800;
+    color: #000000;
+    padding-bottom: 5pt;
+    border-bottom: 1pt solid #888888;
+    page-break-before: always;
+    break-before: page;
+}
+
+/* H3 */
+h3 {
+    font-size: 15pt;
+    font-weight: 700;
+    color: #000000;
+}
+
+/* H4 */
+h4 {
+    font-size: 13pt;
+    font-weight: 700;
+    color: #000000;
+}
+
+/* H5 */
+h5 {
+    font-size: 11pt;
+    font-weight: 800;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* H6 */
+h6 {
+    font-size: 10pt;
+    font-weight: 800;
+    color: #1a1a1a;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   PARAGRAPHS & INLINE TEXT
+   ========================================================================== */
+
+p {
+    margin: 0 0 0.8em 0;
+    orphans: 3;
+    widows: 3;
+}
+
+strong, b {
+    font-weight: 800;
+    color: #000000;
+}
+
+em, i {
+    font-style: italic;
+}
+
+small {
+    font-size: 10pt;
+}
+
+mark {
+    background-color: #e8e8e8;
+    padding: 1pt 3pt;
+}
+
+abbr[title] {
+    border-bottom: 1pt dotted #888888;
+    text-decoration: none;
+}
+
+/* ==========================================================================
+   LINKS
+   ========================================================================== */
+
+a {
+    color: #000000;
+    text-decoration: underline;
+    text-decoration-color: #999999;
+    text-underline-offset: 2pt;
+}
+
+a:hover {
+    text-decoration-color: #000000;
+}
+
+/* ==========================================================================
+   LISTS — Indented from both sides for visual breathing room
+   ========================================================================== */
+
+ul, ol {
+    margin: 0.4em 12pt 1em 12pt;
+    padding-left: 2em;
+}
+
+ul ul, ol ol, ul ol, ol ul {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0.15em;
+    margin-bottom: 0.15em;
+}
+
+li {
+    margin-bottom: 0.3em;
+    line-height: 1.65;
+}
+
+li > p {
+    margin-bottom: 0.3em;
+}
+
+ul { list-style-type: disc; }
+ul ul { list-style-type: circle; }
+ul ul ul { list-style-type: square; }
+
+/* Task lists */
+ul.task-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.task-list-item {
+    position: relative;
+    padding-left: 1.75em;
+}
+
+.task-list-item input[type="checkbox"] {
+    position: absolute;
+    left: 0;
+    top: 0.3em;
+    margin: 0;
+}
+
+/* ==========================================================================
+   BLOCKQUOTES — Indented like lists, left rule + light background
+   ========================================================================== */
+
+blockquote {
+    margin: 1em 12pt 1em 12pt;
+    padding: 10pt 14pt 10pt 16pt;
+    border-left: 3pt solid #bbbbbb;
+    background-color: #fafafa;
+    color: #000000;
+    page-break-inside: avoid;
+}
+
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child  { margin-bottom: 0; }
+
+blockquote blockquote {
+    margin-left: 0;
+    margin-right: 0;
+    border-left-color: #dddddd;
+    background-color: #f5f5f5;
+}
+
+/* ==========================================================================
+   CODE — Full-width (flush to margins) for maximum line length
+   ========================================================================== */
+
+code {
+    font-family: "JetBrains Mono", "SF Mono", "Consolas", "Menlo", monospace;
+    font-size: 10pt;
+    font-weight: 500;
+    padding: 1.5pt 5pt;
+    background-color: #f0f0f0;
+    border: 0.5pt solid #d5d5d5;
+    border-radius: 3pt;
+    color: #000000;
+}
+
+pre {
+    margin: 1em 0;
+    padding: 14pt 16pt;
+    background-color: #f5f5f5;
+    border: 1pt solid #d5d5d5;
+    border-radius: 4pt;
+    line-height: 1.5;
+    page-break-inside: avoid;
+    /* Wrap long lines — never overflow the page */
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+pre code {
+    display: inline;
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    font-weight: 500;
+    font-size: 9.5pt;
+    color: #000000;
+    line-height: inherit;
+    white-space: inherit;
+    word-wrap: inherit;
+    overflow-wrap: inherit;
+}
+
+/* ==========================================================================
+   TABLES — Print-optimised "Engraved" style
+   ---------------------------------------------------------------------------
+   Designed for laser/inkjet fidelity. No gradients, no box-shadows,
+   no border-radius (all unreliable in print). Instead:
+     - Solid 2pt black frame
+     - Dark header band (#333) with white text — prints razor-sharp
+     - 1pt solid cell borders — clean grid, no ambiguity
+     - High-contrast zebra (#eaeaea vs white) — visible on paper
+     - IBM Plex Sans: compact, ink-efficient, superb print clarity
+     - Indented from both sides like lists
+   ========================================================================== */
+
+table {
+    width: calc(100% - 24pt);
+    max-width: calc(100% - 24pt);
+    margin: 1.4em 12pt;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-family: "IBM Plex Sans", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 9pt;
+    /* Frame matches the header gray — cohesive, toner-friendly */
+    border: 2pt solid #999999;
+    page-break-inside: avoid;
+}
+
+thead {
+    /* Medium gray header — crisp but toner-friendly */
+    background-color: #999999;
+}
+
+thead th {
+    color: #ffffff;
+    font-size: 8.5pt;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 8pt 8pt;
+    text-align: left;
+    vertical-align: bottom;
+    /* Dividers between header columns */
+    border-right: 1.5pt solid #b5b5b5;
+    border-bottom: 2pt solid #999999;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+thead th:last-child {
+    border-right: none;
+}
+
+tbody td {
+    padding: 6pt 8pt;
+    font-size: 9pt;
+    font-weight: 500;
+    line-height: 1.45;
+    color: #000000;
+    vertical-align: top;
+    border-bottom: 0.75pt solid #bbbbbb;
+    border-right: 0.75pt solid #cccccc;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+tbody td:last-child {
+    border-right: none;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Zebra striping — strong enough to be visible on paper */
+tbody tr:nth-child(even) {
+    background-color: #eaeaea;
+}
+
+/* Inline code inside tables */
+table code {
+    font-family: "JetBrains Mono", "SF Mono", "Consolas", monospace;
+    font-size: 8pt;
+    font-weight: 500;
+    background-color: #e8e8e8;
+    border: 0.75pt solid #cccccc;
+    border-radius: 3pt;
+    padding: 1pt 5pt;
+    color: #000000;
+}
+
+tbody tr:nth-child(even) code {
+    background-color: #ffffff;
+    border-color: #bbbbbb;
+}
+
+/* Code blocks inside table cells */
+table .code-block {
+    font-family: "JetBrains Mono", "SF Mono", "Consolas", monospace;
+    font-size: 8pt;
+    line-height: 1.6;
+    background-color: #e8e8e8;
+    border: 0.75pt solid #cccccc;
+    border-left: 3pt solid #333333;
+    border-radius: 0;
+    padding: 6pt 10pt;
+    margin-top: 4pt;
+    white-space: pre;
+    display: block;
+    color: #000000;
+}
+
+tbody tr:nth-child(even) .code-block {
+    background-color: #ffffff;
+}
+
+/* Tags — utility classes for status labels in cells */
+.tag {
+    display: inline-block;
+    font-size: 7.5pt;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2pt 8pt;
+    border-radius: 3pt;
+}
+
+.tag-ok   { background-color: #e8e8e8; border: 1pt solid #aaaaaa; color: #222222; }
+.tag-warn { background-color: #d9d9d9; border: 1pt dashed #666666; color: #222222; }
+.tag-off  { background-color: #333333; color: #ffffff; border: 1pt solid #333333; }
+
+.cell-note {
+    font-size: 8pt;
+    color: #666666;
+    font-style: italic;
+    margin-top: 3pt;
+}
+
+caption {
+    caption-side: bottom;
+    font-size: 9pt;
+    font-style: italic;
+    color: #555555;
+    padding-top: 6pt;
+    text-align: left;
+    margin-left: 12pt;
+}
+
+/* ==========================================================================
+   HORIZONTAL RULE
+   ========================================================================== */
+
+hr {
+    border: none;
+    border-top: 1pt solid #cccccc;
+    margin: 1.8em 0;
+}
+
+/* ==========================================================================
+   IMAGES & FIGURES
+   ========================================================================== */
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.2em auto;
+}
+
+figure {
+    margin: 1.5em 0;
+    text-align: center;
+    page-break-inside: avoid;
+}
+
+figcaption {
+    font-size: 9.5pt;
+    font-style: italic;
+    color: #555555;
+    margin-top: 6pt;
+}
+
+/* ==========================================================================
+   DEFINITION LISTS — Indented like lists
+   ========================================================================== */
+
+dl {
+    margin: 1em 12pt;
+}
+
+dt {
+    font-weight: 800;
+    font-size: 11pt;
+    margin-top: 0.8em;
+    color: #000000;
+}
+
+dd {
+    margin-left: 2em;
+    margin-bottom: 0.4em;
+}
+
+/* ==========================================================================
+   KEYBOARD KEYS
+   ========================================================================== */
+
+kbd {
+    display: inline-block;
+    padding: 2pt 6pt;
+    font-family: "JetBrains Mono", "SF Mono", "Consolas", monospace;
+    font-size: 9pt;
+    color: #000000;
+    font-weight: 500;
+    background-color: #f0f0f0;
+    border: 0.5pt solid #bbbbbb;
+    border-bottom-width: 1.5pt;
+    border-radius: 3pt;
+}
+
+/* ==========================================================================
+   FOOTNOTES
+   ========================================================================== */
+
+.footnotes {
+    font-size: 10pt;
+    color: #1a1a1a;
+    border-top: 0.5pt solid #cccccc;
+    padding-top: 12pt;
+    margin-top: 2em;
+}
+
+sup {
+    font-size: 8pt;
+    line-height: 0;
+}
+
+sup a {
+    text-decoration: none;
+    color: #000000;
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   ALERTS / NOTE BOXES — Indented, left border + light fill
+   ========================================================================== */
+
+.markdown-alert {
+    padding: 10pt 14pt;
+    margin: 1em 12pt;
+    border-left: 3pt solid;
+    background-color: #f7f7f7;
+    font-size: 11pt;
+}
+
+.markdown-alert-note      { border-left-color: #888888; }
+.markdown-alert-tip        { border-left-color: #666666; }
+.markdown-alert-important  { border-left-color: #333333; }
+.markdown-alert-warning    { border-left-color: #999999; }
+.markdown-alert-caution    { border-left-color: #444444; }
+
+/* ==========================================================================
+   TABLE OF CONTENTS
+   ========================================================================== */
+
+.toc {
+    border: 1pt solid #cccccc;
+    padding: 14pt 18pt;
+    margin: 1.5em 12pt;
+    page-break-inside: avoid;
+}
+
+.toc ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.toc ul ul {
+    padding-left: 1.5em;
+}
+
+.toc li {
+    margin-bottom: 0.2em;
+    font-size: 11pt;
+}
+
+.toc a {
+    text-decoration: none;
+    color: #000000;
+}
+
+/* Prince-specific: dot leaders for TOC */
+.toc a::after {
+    content: leader('.') target-counter(attr(href), page);
+    font-size: 10pt;
+    color: #999999;
+}
+
+/* ==========================================================================
+   SUMMARY / DETAILS
+   ========================================================================== */
+
+details {
+    margin: 1em 12pt;
+    padding: 0.5em 1em;
+    border: 1pt solid #d5d5d5;
+    border-radius: 3pt;
+}
+
+summary {
+    cursor: pointer;
+    font-weight: 800;
+    color: #000000;
+    font-size: 11pt;
+    display: list-item;
+    padding: 0.2em 0;
+}
+
+details[open] summary {
+    margin-bottom: 0.5em;
+    border-bottom: 0.5pt solid #dddddd;
+    padding-bottom: 0.5em;
+}
+
+/* ==========================================================================
+   PRINT SPECIFIC
+   ========================================================================== */
+
+@media print {
+    body {
+        padding: 0;
+        background: none;
+    }
+
+    a[href^="http"]::after {
+        content: " [" attr(href) "]";
+        font-size: 8.5pt;
+        color: #777777;
+        word-break: break-all;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        page-break-after: avoid;
+        break-after: avoid;
+    }
+
+    pre, blockquote, table, figure, img {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    thead { display: table-header-group; }
+    tr    { page-break-inside: avoid; }
+
+    p {
+        orphans: 3;
+        widows: 3;
+    }
+}
+
+    </style>
+</head>
+<body>
+<h1 id="building-a-flashcard-api-from-zero-outline-study-podcast">BUILDING A FLASHCARD API FROM ZERO — OUTLINE STUDY PODCAST</h1>
+<h2 id="fastapi-supabase-multi-user-architecture-companion-audio-guide">FastAPI, Supabase & Multi-User Architecture — Companion Audio Guide</h2>
+
+<hr>
+Welcome. You should have the printed outline in front of you — we'll be working through it together. Not reading it aloud — actually working through it. When there's a table or a diagram worth looking at, we'll tell you. When we're just talking through ideas, you can sit back and listen. Let's begin at the beginning: Section I.
+
+<hr>
+<h2 id="section-i-why-fastapi-and-what-problem-does-it-solve">SECTION I — WHY FASTAPI AND WHAT PROBLEM DOES IT SOLVE</h2>
+
+<hr>
+❒ So we're building a flashcard API. Before we touch any code — why do we even need an API? What problem are we actually solving?
+
+<p>Here's the situation. You're a Python developer. You've written a script that reads flashcard data from a JSON file, processes it beautifully, prints it to the terminal. It works. It's done. You're happy. Now someone says: "I want to use your flashcards on my phone." And you hit a wall. Because your script runs, does its thing, and exits. There is no door. There is no way for an outside device — a phone, a browser, another machine — to say "hey, give me those flashcards." The script is a closed room.</p>
+
+<p>❒ Okay, but couldn't we just put the JSON file on a web server? Then anyone could download it.</p>
+
+<p>That's the obvious next thought, and it's worth understanding why it fails. A static file on a web server solves exactly one problem — retrieval. Anyone can grab the file. Great. But now try to create a new flashcard. Try to edit one. Try to delete one. You can't. The file is inert. It doesn't know what kind of request you're sending. It doesn't care. It just hands you the same content every time. If you look at the outline, subsection A lays this out with three points — the limitation of scripts, the insufficiency of static files, and then the solution. That solution is what we need to talk about.</p>
+
+<p>❒ Which is an API.</p>
+
+<p>Right. An API — Application Programming Interface — is a program that stays alive. It sits on a server, permanently listening. When a request comes in, it figures out what the request wants — are you reading data? Creating something? Updating? Deleting? — and it does the work. The outline has a great analogy here: think of a receptionist at a front desk. The filing cabinets are your database. Without the receptionist, the cabinets exist but nobody from outside can interact with them. The API is that receptionist — always present, always ready.</p>
+
+<p>❒ Alright, so an API listens for requests. But how does it know what I'm asking for? If I say "flashcards" — do I want all of them? Just one? Do I want to create a new one?</p>
+
+<p>Two things work together here. First, the endpoint — that's a specific URL, like localhost colon 8000 slash cardfolders. Different URLs point to different resources. Second, the HTTP method — that's the verb attached to your request. And this is where it gets elegant. Flip to subsection B in your outline — there's a table mapping HTTP methods to CRUD operations.</p>
+
+<p>❒ I see it. GET, POST, PUT, DELETE.</p>
+
+<p>Exactly. GET means read — just retrieve data, don't touch anything. POST means create — I'm sending you new data, store it. PUT means update — here's a modified version of something that already exists. DELETE means remove it. Four verbs, four operations. And those four operations — Create, Read, Update, Delete, the acronym CRUD — are the foundation of virtually every data-driven application you'll ever build. Every app you use daily — your email, your social media, your banking — is fundamentally CRUD operations on a database, exposed through an API.</p>
+
+<p>❒ That's a clean mapping. So now the question is — what tool do we use to build this API? Python has options, right?</p>
+
+<p>It does, and this is worth thinking through. If you look at subsection C in the outline, it lists three major Python frameworks. Let me explain why two of them lose.</p>
+
+<p>Flask is the oldest. It's a micro-framework — gives you the absolute bare minimum, and you build everything else yourself. Need data validation? Write it by hand. Need documentation? Install a plugin and configure it. It's like getting an empty room and being told to build your own furniture.</p>
+
+<p>Django REST Framework is the opposite extreme. It's built on top of Django, which is a full-featured web framework. It's powerful, but it comes with an enormous amount of machinery — an ORM, an admin panel, a template system. For a focused API project, it's like renting a warehouse when you need a workshop.</p>
+
+<p>❒ So FastAPI sits in between?</p>
+
+<p>Not exactly between — it takes a fundamentally different approach. FastAPI was designed in 2018, decades after Flask and Django, and it was built to exploit modern Python features that didn't exist when those older frameworks were designed. Here's what that means in practice.</p>
+
+<p>First benefit — automatic data validation. FastAPI uses a library called Pydantic — the name's a play on "pedantic" — that lets you define the exact shape of data you expect. You say: this field must be a string, this one must be an integer, this one is optional. When a request arrives that doesn't match? Pydantic rejects it instantly with a detailed error message — a 422 Unprocessable Entity. You write zero validation code. In Flask, you'd write all of that by hand — check every field, check its type, check if it's present. That's tedious, error-prone work that FastAPI eliminates completely.</p>
+
+<p>❒ So the framework guards your door for you.</p>
+
+<p>Exactly. Bad data never touches your database. It's caught at the boundary.</p>
+
+<p>Second benefit — automatic interactive documentation. The moment your FastAPI server starts, it generates a fully interactive documentation page at slash docs. You can see every endpoint, what data each one expects, and — this is the key — you can test them right in your browser. Click "Try it out," fill in some data, hit execute. You don't need Postman, you don't need curl, you don't need any external tool during development. It builds itself from your code.</p>
+
+<p>❒ Wait — it generates docs from your code? How?</p>
+
+<p>That's the third benefit, and it's the cleverest part. FastAPI uses Python's native type hint system — introduced in Python 3.5 — for a dual purpose. When you write something like front underscore text underscore 1 colon str, that single annotation does two things simultaneously: it tells Pydantic to validate that the value is a string, AND it tells the documentation generator to show it as a string field. One line of code, two jobs done. In Flask, validation and documentation are separate systems that you maintain independently.</p>
+
+<p>There's also async support — FastAPI can handle many requests concurrently without blocking — but we're using synchronous code in this tutorial for simplicity. The capability's there when you need it.</p>
+
+<p>❒ Okay. So we have our framework. Now we need a database. The outline mentions Supabase — why not just use a local database like SQLite?</p>
+
+<p>SQLite would work — for exactly one person, on exactly one machine. It stores everything in a single file on your local disk. That's fine for a personal script, but remember our original problem: external clients need to access the data. A phone in another city can't read a file on your laptop.</p>
+
+<p>Supabase solves this by giving you a hosted PostgreSQL database — that's one of the most powerful relational databases in the world, used by Instagram, Spotify, Netflix. But Supabase wraps it in a friendly interface. You get a visual web dashboard where you can create tables, inspect data, run queries — all through your browser. And the Python client library is clean — you write things like supabase dot table cards dot select star dot execute. Very readable, very consistent.</p>
+
+<p>The real kicker? When you eventually deploy your API to a production server, the Supabase connection works identically. No migration, no reconfiguration. It's the same code.</p>
+
+<p>❒ That's three advantages if you're looking at the outline — remote accessibility, visual dashboard, clean Python client. Now, subsection E is big. It talks about four features that transform what we're building from a toy into a platform. What are these four features?</p>
+
+<p>This is where the project gets interesting, so let me build the picture. Imagine we've built a simple flashcard API — one user, no security, no access control. It works. Now imagine two people use it. Immediately, we have problems.</p>
+
+<p>Problem one: if User A creates a card set called "Spanish Verbs," can User B delete it? Of course not — but nothing in a naive system prevents it. We need ownership. Every folder, every card set must know who created it, and every write operation — create, update, delete — must check: are you the owner? If not, you're blocked.</p>
+
+<p>❒ So that's feature one — ownership.</p>
+
+<p>Right. Feature two is visibility. Say you've built a great card set and you want to share it publicly so anyone can browse it. But you also have private card sets — personal study notes you don't want others to see. Each card set needs a flag — is underscore public — that defaults to false. Private unless you explicitly say otherwise.</p>
+
+<p>❒ Makes sense. What about tracking changes?</p>
+
+<p>That's feature three — audit trails. If someone edits a flashcard and the text gets corrupted, you want to know when it happened and who did it. Every card modification gets stamped with a timestamp — updated underscore at — and the identity of the person who made the change — updated underscore by. A permanent record.</p>
+
+<p>❒ And feature four?</p>
+
+<p>Feature four is copying — and this is the one that really makes the platform useful. Imagine a Spanish teacher builds a beautiful 200-card set and shares it publicly. A student finds it, loves it, but wants to personalise it — add notes, remove cards they already know, tweak translations. The student can't edit the original — they're not the owner, and even if they could, their changes would affect every other student. So the API supports a deep copy — a complete, independent clone into the student's own account. Their copy, their rules. The original untouched.</p>
+
+<p>❒ That's a nice set of features. Let me look at the section summary in the outline... it ties it together: static files can't handle CRUD, FastAPI was chosen for validation, documentation, and type hints, Supabase for remote hosting and the dashboard, and these four multi-user features — ownership, visibility, audit trails, copying. And eight sections ahead to build it all. Let's move on.</p>
+
+<hr>
+<h2 id="section-ii-environment-setup-on-macos">SECTION II — ENVIRONMENT SETUP ON macOS</h2>
+
+<hr>
+❒ Section II — setting up the environment. Before we build anything, we need the workshop ready. The outline says there are four steps, and they must happen in order. Why does order matter?
+
+<p>Because each step depends on the previous one. Think of it as: first build the walls — that's your virtual environment, the isolation. Then bring in the tools — that's installing the packages. Then lock up the valuables — that's your credentials file and the gitignore. Then test the lights — that's your verification run. If you try to install packages before the environment exists, they go into the wrong place. If you skip the gitignore and push to GitHub, your credentials are exposed. The sequence is deliberate.</p>
+
+<p>❒ Step one — the project folder and virtual environment. What do we actually type?</p>
+
+<p>Three commands. mkdir flashcard-api — creates the folder. cd flashcard-api — go inside. workon vintel — activate the virtual environment. After that last one, your terminal prompt will change — you'll see vintel in parentheses at the beginning. That's your confirmation.</p>
+
+<p>❒ Now, I know what a virtual environment is in general terms, but why does it matter here specifically?</p>
+
+<p>Think about what happens without one. You install FastAPI for this project. Next month, you start a different project that needs an older version of one of FastAPI's dependencies. You install it, and it overwrites what the flashcard project needs. Now your flashcard project is broken, and you didn't touch it. Dependency hell.</p>
+
+<p>A virtual environment is a sealed room. We're using virtualenvwrapper, so the workon command activates a named environment stored centrally — typically in the dot virtualenvs folder in your home directory. When you install libraries while inside, they go into that environment only. Not your system Python, not any other project. Complete isolation. Your project folder stays clean.</p>
+
+<p>❒ One thing the outline emphasises — and this catches people — is that the activation doesn't persist.</p>
+
+<p>Right. Every time you open a new terminal window, you're starting fresh. No virtual environment active. You have to run workon vintel again. Every single time. Forget this and you'll be installing packages into your system Python wondering why nothing works.</p>
+
+<p>❒ Step two — installing packages. One command?</p>
+
+<p>One command: pip install fastapi uvicorn supabase python-dotenv. Four packages. But let me explain what each one actually does, because they're not interchangeable — they do fundamentally different jobs.</p>
+
+<p>❒ Let's start with fastapi itself.</p>
+
+<p>FastAPI is the framework — the rule book. It gives you decorators like at app dot get and at app dot post that turn ordinary Python functions into API endpoints. It handles routing — figuring out which function to call based on the URL. It handles parsing — extracting data from the request. But here's what trips people up: FastAPI cannot listen for HTTP requests on its own. It's not a server. It's a set of rules and decorators. It needs an engine.</p>
+
+<p>❒ And that engine is uvicorn?</p>
+
+<p>Exactly. Uvicorn is an ASGI server — Asynchronous Server Gateway Interface. Think of ASGI as a contract. FastAPI speaks ASGI, Uvicorn speaks ASGI, so they can work together. Uvicorn is the piece that actually listens on a network port — port 8000 by default — receives incoming HTTP requests from the outside world, hands them to FastAPI for processing, and sends the responses back. FastAPI defines what to do. Uvicorn is how requests arrive and depart. Two separate jobs, two separate packages.</p>
+
+<p>❒ What about the supabase package?</p>
+
+<p>That's the official Python client for talking to your hosted database. It gives you that clean chained syntax — supabase dot table cards dot select star dot execute. Nothing fancy, just the bridge between your Python code and the PostgreSQL database sitting in the cloud.</p>
+
+<p>❒ And python-dotenv — what's that for?</p>
+
+<p>This is about keeping secrets secret. Your Supabase URL and API key are credentials. If you hardcode them in your Python files and push to GitHub, anyone can see them and access your database. python-dotenv reads a separate dot env file — a simple text file with key-value pairs — and loads them as environment variables. Your code reads os dot environ bracket SUPABASE underscore URL bracket. The credentials never appear in source code.</p>
+
+<p>❒ Which brings us to step three — setting up that dot env file. What goes in it?</p>
+
+<p>Two lines. SUPABASE underscore URL equals your project URL. SUPABASE underscore KEY equals your anon public key. You find both by going to your Supabase dashboard — supabase dot com, open your project, Project Settings in the left sidebar, then click API. Both values are right there. Copy them in.</p>
+
+<p>❒ And the gitignore — the outline says we need to protect certain files from version control.</p>
+
+<p>The dot gitignore file tells Git: never track these, never upload these to GitHub, even by accident. We exclude the dot env file — your credentials. We exclude double underscore pycache double underscore — that's Python's auto-generated bytecode cache, not source code. And we exclude venv slash — in case a local virtual environment folder exists. You don't want any of these in your repository.</p>
+
+<p>❒ Step four — verification. How do we know everything works?</p>
+
+<p>Create a tiny test file — test underscore setup dot py. Import FastAPI, create an app instance, add one GET endpoint at slash that returns a JSON message. Then run uvicorn test underscore setup colon app dash dash reload.</p>
+
+<p>❒ What does that command format mean? test underscore setup colon app?</p>
+
+<p>It's filename without extension, colon, variable name. So Uvicorn looks inside test underscore setup dot py for an object called app. The dash dash reload flag is a development convenience — Uvicorn watches your files and automatically restarts the server whenever you save a change. You never have to manually stop and restart during development. Without it, you'd be hitting Control C and re-running the command every time you change a line.</p>
+
+<p>Open your browser to localhost colon 8000 — you should see the JSON message. Then go to localhost colon 8000 slash docs — there's the Swagger documentation with one endpoint listed. Control C to stop the server, delete the test file. It served its purpose.</p>
+
+<p>❒ Let me check the section summary in the outline... project folder, four packages installed, dot env and dot gitignore created, verification done. Clean starting point. Shall we build our database?</p>
+
+<h3 id="section-ii-complete-code">SECTION II — COMPLETE CODE</h3>
+
+<p><strong>Terminal commands — project setup:</strong></p>
+
+<pre><code class="language-bash">mkdir flashcard-api
+cd flashcard-api
+workon vintel</code></pre>
+<strong>Terminal commands — install packages:</strong>
+
+<pre><code class="language-bash">pip install fastapi uvicorn supabase python-dotenv</code></pre>
+<strong>File: <code>.env</code></strong>
+
+<pre><code>SUPABASE_URL=https://your-project-id.supabase.co
+SUPABASE_KEY=your-anon-key-here</code></pre>
+<strong>File: <code>.gitignore</code></strong>
+
+<pre><code>.env
+__pycache__/</code></pre>
+<strong>File: <code>test_setup.py</code> (verification — delete after testing)</strong>
+
+<pre><code class="language-python">from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get(&quot;/&quot;)
+def root():
+    return {&quot;message&quot;: &quot;Flashcard API is alive&quot;}</code></pre>
+<strong>Terminal commands — run verification:</strong>
+
+<pre><code class="language-bash">uvicorn test_setup:app --reload</code></pre>
+<hr>
+<h2 id="section-iii-database-design-in-supabase">SECTION III — DATABASE DESIGN IN SUPABASE</h2>
+
+<hr>
+❒ Section III — database design. This is where we decide the shape of our data. Before we look at specific tables, let me ask a foundational question: why not just one big table? Why can't I put everything — users, folders, card sets, cards — into a single table?
+
+<p>That's the right question to start with, and I want you to really feel the pain before I give you the solution. Imagine one giant table. Every row is a card. And each row contains the card's content, plus the name of the card set it belongs to, plus the name of the folder, plus the user's name and email. All in one row.</p>
+
+<p>Now — the folder "Spanish Vocabulary" has 500 cards across 10 sets. The string "Spanish Vocabulary" is stored 500 times. Five hundred identical copies. Want to rename the folder? Update 500 rows. Miss one? Now you have 499 rows saying "Spanish Language" and one still saying "Spanish Vocabulary." Which one is correct? There's no authoritative source — each row is a separate copy that can drift.</p>
+
+<p>❒ That's the inconsistency problem.</p>
+
+<p>And it gets worse. Say you delete all the cards in a particular set. The set itself vanishes — because it only existed as data repeated in card rows. There's no independent record of it. The user might have wanted to keep the empty set as a placeholder, but it's gone. That's a deletion anomaly.</p>
+
+<p>And then there's user data. Without a separate users table, every card row repeats the user's name and email. User changes their email? Every card they ever touched needs updating.</p>
+
+<p>❒ Okay, I feel the pain. What's the proper solution?</p>
+
+<p>Normalisation. The idea — formalised by Edgar F. Codd in 1970 — is beautifully simple: store each fact exactly once. Instead of writing "Spanish Vocabulary" 500 times, store it once in a cardfolders table and give it a unique ID. Every card stores just that ID — a lightweight pointer. Need to rename? Change one row. Every reference to it automatically reflects the new name.</p>
+
+<p>❒ So we split into separate tables. How many do we need?</p>
+
+<p>Four. And if you look at the table in subsection A of your outline, you'll see them laid out with their dependencies. Users — that's identity, who uses the system. Depends on nothing, created first. Cardfolders — containers for card sets. Depends on users. Cardsets — the actual collections, with ownership and visibility. Depends on both users and cardfolders. Cards — the individual flashcards with audit trails. Depends on cardsets and users for audit.</p>
+
+<p>❒ Let me trace the hierarchy. Users own folders. Folders contain card sets. Card sets contain cards. It's a strict chain.</p>
+
+<p>Exactly. And that chain matters for creation order in the database — you can't reference a table that doesn't exist yet. Users first, then folders, then card sets, then cards.</p>
+
+<p>❒ Now, these tables need to be connected somehow. The outline talks about foreign keys — what exactly is a foreign key?</p>
+
+<p>Let's build from first principles. Every table has a primary key — a column that uniquely identifies each row. In our design, it's always the id column, a UUID. No two rows can have the same one.</p>
+
+<p>A foreign key is a column in a different table that points to a primary key. The cardfolders table has a user underscore id column. Each value in that column is a UUID that matches an id in the users table. That's the link — "this folder belongs to this user." And here's the crucial part: the database enforces this. You literally cannot insert a value in user underscore id that doesn't correspond to an existing user. The database rejects it.</p>
+
+<p>❒ So the relationships are enforced, not just suggested. Now — what happens when you delete a parent? If I delete a user, what happens to their folders?</p>
+
+<p>This is one of the most important design decisions in the whole project, and the outline lays out two options at subsection C point two. Let me give you both, and you'll immediately see why each is used where it is.</p>
+
+<p>Option one: CASCADE. When you delete the parent, all children are automatically deleted. The logic is: if the child cannot meaningfully exist without the parent, destroy them together. A folder without an owner makes no sense. A card set without a folder makes no sense. A card without a card set makes no sense. So: delete a user, their folders cascade away. Delete a folder, its card sets cascade. Delete a card set, its cards cascade.</p>
+
+<p>❒ That's clean. What's option two?</p>
+
+<p>Option two: SET NULL. When you delete the referenced entity, the foreign key column is set to null — but the child survives. The logic is: the reference is informational, not existential. Think about the audit trail. A card has an updated underscore by field pointing to the user who last edited it. If that user's account is deleted, should the card be destroyed? Absolutely not — it belongs to someone else. It's perfectly valid. We just lose the information about who made that particular edit. The field becomes null: "the person who last edited this card no longer exists."</p>
+
+<p>❒ Oh — so CASCADE is for existential relationships and SET NULL is for informational references. That's a clean distinction.</p>
+
+<p>And it's consistent throughout the whole design. If you look at the table in your outline — four rows. User deleted, folders cascade. Folder deleted, card sets cascade. Card set deleted, cards cascade. But user deleted and the updated underscore by field on cards they edited — SET NULL. The card lives on. Only the editor reference clears.</p>
+
+<p>❒ Let me ask about the multi-user columns specifically. The outline has three categories in subsection D.</p>
+
+<p>Right. Category one — ownership. Both cardfolders and cardsets carry a user underscore id column pointing to the users table. Every write operation checks this column: does the requester match the owner? If not — 403 Forbidden.</p>
+
+<p>Now here's a subtle design choice. Cards don't have their own user underscore id. Card ownership is inherited from the parent card set. If you own the set, you own the cards inside it. This avoids duplicating ownership data at the card level.</p>
+
+<p>❒ Category two — visibility?</p>
+
+<p>The cardsets table has an is underscore public boolean, defaulting to false. Private unless you explicitly flip it. And notice — this lives at the card set level, not the folder level.</p>
+
+<p>❒ Why not the folder level? That seems like it would be simpler.</p>
+
+<p>Think about what happens. You have a folder called "Languages" with three card sets inside — "Spanish Basics," "French Verbs," and your private "Embarrassing Mistakes." If visibility is on the folder, it's all-or-nothing. You either share everything in the folder or nothing. But if visibility is on the card set, you can make "Spanish Basics" public, keep "Embarrassing Mistakes" private, and there's no contradiction. Each set is independently controlled.</p>
+
+<p>Even worse — if you had a public card set inside a private folder, what should happen? Is it visible or not? The rules conflict. Keeping visibility on card sets avoids all that ambiguity.</p>
+
+<p>❒ Category three — the audit columns.</p>
+
+<p>On the cards table only. Updated underscore at — a timestamptz, starts as null. Updated underscore by — a uuid pointing to users, also starts null, with SET NULL on delete. When a card is modified, both get stamped. A null updated underscore at clearly communicates: this card has never been edited since creation. It's not "we don't know when it was edited." It's "it hasn't been."</p>
+
+<p>❒ Now let's actually create these tables. The outline has a step-by-step in subsection E. First — how do we navigate the Supabase dashboard?</p>
+
+<p>When you log into supabase dot com and open your project, the left sidebar has a bunch of options — Authentication, Database, Storage, and more. The one you want is Table Editor. It gives you a graphical interface for creating tables without writing a line of SQL. Click New Table. And one important note right away: uncheck "Enable Row Level Security." We're handling security at the API level in this tutorial, not at the database level.</p>
+
+<p>❒ Let's go table by table. The outline has detailed column tables for each one — I'm looking at them now. Table one: users.</p>
+
+<p>Four columns. The id — type uuid, primary key, not null, with a default of gen underscore random underscore uuid. That function generates a UUID automatically for every new row. UUID stands for Universally Unique Identifier — a 128-bit number, 36-character string. The odds of two colliding are astronomically small.</p>
+
+<p>Then username — text, not null, and crucially, unique. Email — same thing, text, not null, unique. The UNIQUE constraint means the database itself rejects duplicate usernames or emails. To set it in Supabase, click the gear icon on the column and check "Is Unique."</p>
+
+<p>Finally, created underscore at — type timestamptz, with a default of now. Timestamptz is PostgreSQL's timestamp type that includes timezone information, so timestamps are consistent regardless of where the server is.</p>
+
+<p>❒ Table two — cardfolders. I can see it depends on users.</p>
+
+<p>Five columns. The id — same UUID pattern. User underscore id — uuid, not null, with a foreign key pointing to users dot id, ON DELETE CASCADE. This is the ownership link. Name — text, not null. Description — text, nullable, because not every folder needs a description. Created underscore at — timestamptz with now default.</p>
+
+<p>To create that foreign key in Supabase: click the link icon next to user underscore id, select the users table and id column, and set ON DELETE to CASCADE.</p>
+
+<p>❒ Table three — cardsets. Two foreign keys this time.</p>
+
+<p>Seven columns. Id — UUID primary key. Cardfolder underscore id — points to cardfolders dot id with CASCADE. User underscore id — points to users dot id with CASCADE. Is underscore public — boolean, not null, default false — remember, private by default. Name — text, not null. Description — nullable text. Created underscore at — timestamptz.</p>
+
+<p>❒ And table four — cards. This is the big one. If you're following along in the outline, there's a twelve-row column table.</p>
+
+<p>Let me break this into groups. First, the structural columns. Id — UUID primary key. Cardset underscore id — uuid, not null, foreign key to cardsets dot id with CASCADE.</p>
+
+<p>Second, the content columns — and there are eight of them, all text, all nullable. Why nullable? Because not every card uses every field. Some might only have text, no image. Some might have audio but no image. So: front underscore text underscore 1, front underscore audio underscore text underscore 1, front underscore audio underscore 1, front underscore image. And the same four for the back of the card.</p>
+
+<p>❒ That's a lot of fields. Why separate audio text from display text?</p>
+
+<p>Great question — we'll dig deep into that in Section VII. Short version: what looks good on screen sounds terrible when read aloud by a text-to-speech engine. The display text might say "El gato (the cat) [m.]" — perfectly clear visually. But a TTS engine would read the brackets and parentheses aloud. Garbled nonsense. The audio text field holds a cleaned version: just "El gato."</p>
+
+<p>❒ Makes sense. What about the audit columns?</p>
+
+<p>Third group — created underscore at with a now default. Updated underscore at — timestamptz, nullable, and critically, no default. It starts as null, meaning "never edited." Not "unknown" — actively communicating "no edits have occurred." And updated underscore by — uuid, nullable, foreign key to users dot id with ON DELETE SET NULL. Not CASCADE — because if the editor's account is deleted, the card itself should survive. Only the reference clears.</p>
+
+<p>❒ The outline mentions a complete cascade chain. Walk me through what happens when you delete a user.</p>
+
+<p>It's like dominoes. Delete the user — CASCADE to their folders — CASCADE to the card sets inside those folders — CASCADE to the cards inside those sets. Everything that user owned is gone. But — and this is the critical nuance — cards that the user merely edited, belonging to other users' sets, those survive. Only the updated underscore by field on those cards is set to null. The card stays. The edit record becomes "an unknown user made this change."</p>
+
+<p>❒ Let me check the section summary... four tables in a strict hierarchy, normalisation eliminates duplication, foreign keys with CASCADE enforce integrity, is underscore public lives on cardsets not folders, audit trail on cards, SET NULL preserves cards when editors leave. Solid foundation. What's next — how do we organise the code?</p>
+
+<hr>
+<h2 id="section-iv-project-architecture">SECTION IV — PROJECT ARCHITECTURE</h2>
+
+<hr>
+❒ Section IV — project architecture. We've got four database tables. We've got a framework. Now we need to organise the actual code. Could we just write everything in one Python file?
+
+<p>You could — and for a tiny project with two endpoints, it would be fine. But we're building 22 endpoints. Plus ownership checks. Plus visibility filters. Plus utility functions. In one file, you'd be scrolling through hundreds of lines to find anything. Change something for card sets and you might accidentally break something for users. Multiple developers can't easily work on different parts. One file does not scale.</p>
+
+<p>❒ So what's the alternative?</p>
+
+<p>FastAPI has a built-in solution called APIRouter. A router is essentially a mini-application that handles a subset of endpoints. You create one router for user operations, one for folders, one for card sets, one for cards. Each lives in its own file. Then your main application file plugs them all in with app dot include underscore router.</p>
+
+<p>Think of it like a book. Each chapter covers one topic — that's a router file. The table of contents — that's main dot py. When you need to work on card set endpoints, you open cardset underscore router dot py. Nothing else is in your way.</p>
+
+<p>❒ The outline has a directory tree diagram in subsection B. I'm looking at it now. Walk me through the structure.</p>
+
+<p>At the top level, your flashcard-api folder. Inside it, four things directly: dot env for credentials, dot gitignore, main dot py as the entry point, and database dot py for the Supabase connection.</p>
+
+<p>Then three subfolders. The models folder holds Pydantic models — the data shapes for each entity. Four files: user underscore models, cardfolder underscore models, cardset underscore models, card underscore models.</p>
+
+<p>The routers folder holds the endpoint logic — same four entities, four files: user underscore router, cardfolder underscore router, cardset underscore router, card underscore router.</p>
+
+<p>And a utils folder with one file: audio underscore text dot py — the regex-based audio text generator.</p>
+
+<p>❒ I notice each folder has an init file — double underscore init double underscore dot py. What are those?</p>
+
+<p>This is a Python convention that trips people up because it seems like magic. By default, a directory in Python is just a directory — it has no special meaning. But the moment you place an empty file called double underscore init double underscore dot py inside it, Python treats that directory as a package. That means you can import from it using dot notation — from routers import cardfolder underscore router. Without that empty file, the import fails. The file itself can be completely empty — just its presence changes the behaviour. Strange but essential.</p>
+
+<p>❒ The outline mentions two foundational files in subsection C — database dot py and main dot py. What do they do?</p>
+
+<p>Database dot py is the single connection point to Supabase. Four steps: import os, import load underscore dotenv, import create underscore client from supabase. Call load underscore dotenv to read the dot env file. Pull the URL and key from environment variables. Create the client with supabase equals create underscore client of url and key. That supabase object gets imported by every router — one shared connection point for the entire application.</p>
+
+<p>Main dot py is the orchestrator. It creates the FastAPI instance — app equals FastAPI with a title, description, and version. Then four calls to app dot include underscore router, one per router. And one root endpoint at slash that returns a simple "Flashcard API is running" — a health check to confirm the server is alive. You start it with uvicorn main colon app dash dash reload.</p>
+
+<p>❒ The section summary notes something interesting — the user underscore router and user underscore models files are entirely new compared to a single-user version of this system. Everything else existed before; the multi-user dimension adds those two files. Let's move to the models.</p>
+
+<h3 id="section-iv-complete-code">SECTION IV — COMPLETE CODE</h3>
+
+<p><strong>Project directory structure:</strong></p>
+
+<pre><code>flashcard-api/
+├── .env
+├── .gitignore
+├── main.py
+├── database.py
+├── models/
+│   ├── __init__.py
+│   ├── user_models.py
+│   ├── cardfolder_models.py
+│   ├── cardset_models.py
+│   └── card_models.py
+├── routers/
+│   ├── __init__.py
+│   ├── user_router.py
+│   ├── cardfolder_router.py
+│   ├── cardset_router.py
+│   └── card_router.py
+├── utils/
+│   ├── __init__.py
+│   └── audio_text.py</code></pre>
+<strong>Terminal commands to create the structure:</strong>
+
+<pre><code class="language-bash">mkdir models routers utils
+touch main.py database.py
+touch models/__init__.py models/user_models.py models/cardfolder_models.py models/cardset_models.py models/card_models.py
+touch routers/__init__.py routers/user_router.py routers/cardfolder_router.py routers/cardset_router.py routers/card_router.py
+touch utils/__init__.py utils/audio_text.py</code></pre>
+<strong>File: <code>database.py</code></strong>
+
+<pre><code class="language-python">import os
+from dotenv import load_dotenv
+from supabase import create_client, Client
+
+load_dotenv()
+
+url: str = os.environ[&quot;SUPABASE_URL&quot;]
+key: str = os.environ[&quot;SUPABASE_KEY&quot;]
+
+supabase: Client = create_client(url, key)</code></pre>
+<strong>File: <code>main.py</code></strong>
+
+<pre><code class="language-python">from fastapi import FastAPI
+from routers import user_router, cardfolder_router, cardset_router, card_router
+
+app = FastAPI(
+    title=&quot;Flashcard API&quot;,
+    description=&quot;Multi-user API for managing flashcard folders, sets, and cards with ownership, public sharing, and copy features&quot;,
+    version=&quot;2.0.0&quot;
+)
+
+app.include_router(user_router.router)
+app.include_router(cardfolder_router.router)
+app.include_router(cardset_router.router)
+app.include_router(card_router.router)
+
+@app.get(&quot;/&quot;)
+def root():
+    return {&quot;message&quot;: &quot;Flashcard API is running&quot;}</code></pre>
+<hr>
+<h2 id="section-v-pydantic-models">SECTION V — PYDANTIC MODELS</h2>
+
+<hr>
+❒ Section V — Pydantic models. We mentioned Pydantic earlier as a validation library. But before we look at the specific models, I want to understand the problem they solve. What happens without them?
+
+<p>Picture this. A client sends a POST request to create a flashcard. The data arrives as JSON in the request body. JSON is just text — it could contain anything. A number where a string should be. A missing required field. Extra fields that shouldn't be there. Without validation, your server blindly tries to insert whatever arrives into the database. Best case, the database throws an error. Worst case, the bad data goes in silently and you have corruption you don't know about.</p>
+
+<p>❒ So Pydantic is the bouncer at the door.</p>
+
+<p>Exactly. You define Python classes that describe the exact shape of acceptable data. FastAPI uses them to validate every incoming request before your endpoint code even runs. If the data is bad — automatic 422 response with a detailed error message listing exactly which fields failed and why. If the data is good — your code gets a clean, type-safe Python object. No guessing, no checking.</p>
+
+<p>❒ The outline describes three categories of models in subsection B. Create, Update, and Response. Why three? Why not one model per entity?</p>
+
+<p>Because different operations need different fields, and getting this wrong creates security holes. Let me explain each category and you'll see why they must be separate.</p>
+
+<p>Create models — what the client sends when making something new. These exclude auto-generated fields like id and created underscore at. The database handles those — the client has no business providing them. And crucially, they exclude user underscore id. Ownership comes from the request header, not the body. If user underscore id were in the create model, a malicious client could say "create this folder on behalf of User B." The server-side header assignment prevents that.</p>
+
+<p>❒ So the Create model is deliberately missing fields. What about Update?</p>
+
+<p>Update models define only what can be changed after creation. And every field is optional — the client might only want to change the name, not the description. Some fields are excluded entirely. You can't change a card set's owner — that would be transferring ownership. You can't move a card set to a different folder via update. Those exclusions are deliberate constraints.</p>
+
+<p>❒ And Response models?</p>
+
+<p>Response models are the complete picture — everything the client should see. They include the auto-generated id, the created underscore at timestamp, and for cards, the audit fields — updated underscore at and updated underscore by. These are the models used for what the API sends back.</p>
+
+<p>❒ Let me look at the specific models in subsection C. The outline has tables for each entity. Starting with users — seems simple?</p>
+
+<p>The simplest. UserCreate has just username, a required string, and email, a required string. UserResponse adds id and created underscore at. UserUpdate is not implemented — a tutorial simplification, we don't support changing usernames or emails.</p>
+
+<p>❒ Card folder models?</p>
+
+<p>CardfolderCreate has name, required, and description, optional, defaulting to None. No user underscore id — set from the header. CardfolderResponse adds id, user underscore id, name, description, created underscore at. Now the client can see who owns the folder.</p>
+
+<p>❒ Card set models — this is where it gets interesting.</p>
+
+<p>Three models. CardsetCreate has cardfolder underscore id — which folder does this set go in — name, description, and is underscore public defaulting to false. Private by default. Still no user underscore id — from the header.</p>
+
+<p>CardsetUpdate has name, description, and is underscore public — all optional. Look at what's excluded. No cardfolder underscore id — you can't move a set to a different folder through update. No user underscore id — you can't transfer ownership. Those are architectural constraints enforced by the model itself.</p>
+
+<p>CardsetResponse shows everything: id, cardfolder underscore id, user underscore id, name, description, is underscore public, created underscore at.</p>
+
+<p>❒ And card models — the most complex?</p>
+
+<p>CardCreate has cardset underscore id — required, because a card must belong to a set — plus eight content fields, all optional. Front text, front audio text, front audio, front image, and the same four for back.</p>
+
+<p>CardUpdate has just the eight content fields, all optional. No cardset underscore id — you can't move a card to a different set.</p>
+
+<p>CardResponse has everything: id, cardset underscore id, all eight content fields, created underscore at, and the audit fields — updated underscore at and updated underscore by, both optional. They're optional because a brand new card that's never been edited has null audit fields.</p>
+
+<p>❒ The outline highlights a critical exclusion at point five. What is it?</p>
+
+<p>Updated underscore at and updated underscore by appear only in CardResponse. Never in CardCreate. Never in CardUpdate. The API sets them automatically during updates. No client can provide them. No one can fake their audit trail. If they appeared in the Update model, a malicious user could stamp someone else's ID or backdate a timestamp. The model prevents it.</p>
+
+<p>❒ Now, subsection D covers how the API identifies the requesting user. The outline describes a simplified authentication using the x-user-id header. How does that work?</p>
+
+<p>The client sends their user ID as an HTTP header called x-user-id with every request. FastAPI reads it using the Header dependency. Two syntax forms. Header with an ellipsis — the header is required, missing it gives a 422 error. Header with default equals None — optional, value is None if missing. And there's a nice automatic conversion: Python uses underscores in variable names, but HTTP headers use hyphens. You write x underscore user underscore id in Python, the client sends x-user-id as the header. FastAPI converts between them automatically.</p>
+
+<p>❒ But the outline warns this isn't secure for production.</p>
+
+<p>Correct. Anyone can fake the header. There's no verification that the user ID actually belongs to the person sending the request. In production, you'd use JWT tokens, OAuth, or Supabase Auth. But the ownership and visibility logic — checking who you are, comparing you to the resource owner — is identical regardless of how you establish identity. We're learning the logic, not the authentication infrastructure.</p>
+
+<p>❒ Section summary in the outline: Pydantic models in three categories, user underscore id never in Create models, is underscore public defaults to false, audit fields only in Response models, simplified auth via the header. Let's build the actual endpoints.</p>
+
+<h3 id="section-v-complete-code">SECTION V — COMPLETE CODE</h3>
+
+<p><strong>File: <code>models/user_models.py</code></strong></p>
+
+<pre><code class="language-python">from pydantic import BaseModel
+from datetime import datetime
+
+class UserCreate(BaseModel):
+    username: str
+    email: str
+
+class UserResponse(BaseModel):
+    id: str
+    username: str
+    email: str
+    created_at: datetime</code></pre>
+<strong>File: <code>models/cardfolder_models.py</code></strong>
+
+<pre><code class="language-python">from pydantic import BaseModel
+from typing import Optional
+from datetime import datetime
+
+class CardfolderCreate(BaseModel):
+    name: str
+    description: Optional[str] = None
+
+class CardfolderResponse(BaseModel):
+    id: str
+    user_id: str
+    name: str
+    description: Optional[str] = None
+    created_at: datetime</code></pre>
+<strong>File: <code>models/cardset_models.py</code></strong>
+
+<pre><code class="language-python">from pydantic import BaseModel
+from typing import Optional
+from datetime import datetime
+
+class CardsetCreate(BaseModel):
+    cardfolder_id: str
+    name: str
+    description: Optional[str] = None
+    is_public: bool = False
+
+class CardsetUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    is_public: Optional[bool] = None
+
+class CardsetResponse(BaseModel):
+    id: str
+    cardfolder_id: str
+    user_id: str
+    name: str
+    description: Optional[str] = None
+    is_public: bool
+    created_at: datetime</code></pre>
+<strong>File: <code>models/card_models.py</code></strong>
+
+<pre><code class="language-python">from pydantic import BaseModel
+from typing import Optional
+from datetime import datetime
+
+class CardCreate(BaseModel):
+    cardset_id: str
+    front_text_1: Optional[str] = None
+    front_audio_text_1: Optional[str] = None
+    front_audio_1: Optional[str] = None
+    front_image: Optional[str] = None
+    back_text_1: Optional[str] = None
+    back_audio_text_1: Optional[str] = None
+    back_audio_1: Optional[str] = None
+    back_image: Optional[str] = None
+
+class CardUpdate(BaseModel):
+    front_text_1: Optional[str] = None
+    front_audio_text_1: Optional[str] = None
+    front_audio_1: Optional[str] = None
+    front_image: Optional[str] = None
+    back_text_1: Optional[str] = None
+    back_audio_text_1: Optional[str] = None
+    back_audio_1: Optional[str] = None
+    back_image: Optional[str] = None
+
+class CardResponse(BaseModel):
+    id: str
+    cardset_id: str
+    front_text_1: Optional[str] = None
+    front_audio_text_1: Optional[str] = None
+    front_audio_1: Optional[str] = None
+    front_image: Optional[str] = None
+    back_text_1: Optional[str] = None
+    back_audio_text_1: Optional[str] = None
+    back_audio_1: Optional[str] = None
+    back_image: Optional[str] = None
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+    updated_by: Optional[str] = None</code></pre>
+<strong>Header dependency syntax (used across all routers):</strong>
+
+<pre><code class="language-python">from fastapi import Header
+
+# Required header — request fails with 422 if missing:
+def my_endpoint(x_user_id: str = Header(...)):
+
+# Optional header — defaults to None if missing:
+def my_endpoint(x_user_id: str = Header(default=None)):</code></pre>
+<hr>
+<h2 id="section-vi-building-every-endpoint">SECTION VI — BUILDING EVERY ENDPOINT</h2>
+
+<hr>
+❒ Section VI — this is the main event. We're building every endpoint. How many are we talking about?
+
+<p>Twenty-one across four routers, plus one more copy endpoint in Section VIII for a total of twenty-two. If you look at the table in subsection A: Users — three endpoints. Folders — five. Card sets — seven. Cards — six. Let's take them one router at a time.</p>
+
+<p>❒ But first — the outline covers HTTP status codes in subsection B. Why does that matter?</p>
+
+<p>Because the status code is how the API communicates what happened. It's the language of API responses. Every response carries a numeric code. 200 range means success. 400 range means the client made an error. 500 range means the server broke.</p>
+
+<p>We use seven specific codes, and I want to highlight a distinction that most beginners get wrong. Look at the table in your outline. 401 Unauthorized versus 403 Forbidden.</p>
+
+<p>❒ They sound similar. What's the difference?</p>
+
+<p>401 means "we don't know who you are." The user ID doesn't correspond to any registered user. Authentication failure — your identity is unknown.</p>
+
+<p>403 means "we know who you are, but you're not allowed." You're a real, verified user, but you don't own this resource. Authorisation failure — identity known, permissions insufficient.</p>
+
+<p>The other codes: 200 OK for successful reads, updates, deletes. 201 Created for successful creation. 404 Not Found when the resource doesn't exist. 409 Conflict when the data is valid but conflicts with current state — like a duplicate username. And 422 when Pydantic validation fails.</p>
+
+<p>❒ The outline also describes helper functions before the routers — four reusable verification functions in subsection C. Why?</p>
+
+<p>Because ownership verification happens on almost every endpoint. Writing the same check inside twenty different functions is repetitive and error-prone. Instead, we extract it into helpers that every endpoint calls.</p>
+
+<p>Verify underscore user takes a user ID, queries the users table. If the user doesn't exist — 401 Unauthorized.</p>
+
+<p>Verify underscore folder underscore ownership takes a folder ID and user ID. Fetches the folder. Doesn't exist? 404. Exists but the user doesn't match? 403.</p>
+
+<p>Verify underscore cardset underscore ownership — same pattern for card sets. 404 or 403.</p>
+
+<p>❒ But cards don't have their own user underscore id. So how does card ownership verification work?</p>
+
+<p>That's what the fourth helper solves — get underscore card underscore and underscore verify underscore ownership. It performs a two-step chain. First, fetch the card. If it doesn't exist — 404. Then look at which card set this card belongs to, and verify that the requesting user owns that card set. If not — 403. Two database lookups chained together, because card ownership is inherited, not direct.</p>
+
+<p>❒ Alright. Let's go through the routers. User router first — three endpoints.</p>
+
+<p>The simplest router. POST slash users — register a new user. Before inserting, the endpoint checks whether the username or email already exists. If either does — 409 Conflict with a clear message like "Username already taken."</p>
+
+<p>❒ Why check explicitly? The database has UNIQUE constraints — wouldn't it catch duplicates?</p>
+
+<p>It would, but the error message would be a raw database error — cryptic, unhelpful to the client. By checking explicitly first, we return a human-readable message. Better user experience, same protection.</p>
+
+<p>GET slash users — list all registered users. No authentication required for this tutorial.</p>
+
+<p>GET slash users slash user underscore id — get one specific user. Returns them or 404.</p>
+
+<p>❒ Folder router — five endpoints. I'm looking at subsection E in the outline.</p>
+
+<p>POST slash cardfolders — create a folder. Here's the critical line: data bracket user underscore id equals x underscore user underscore id. The ownership is set server-side, from the header. The client's request body doesn't contain user underscore id at all — remember, it's excluded from the Create model. The client literally cannot claim to create a folder on behalf of another user. The system controls who owns what.</p>
+
+<p>❒ That's the ownership enforcement pattern.</p>
+
+<p>And it repeats everywhere. GET slash cardfolders slash my — returns only folders where user underscore id matches the requester. Your folders, nobody else's.</p>
+
+<p>GET slash cardfolders slash folder underscore id — get one folder by ID. 404 if not found.</p>
+
+<p>PUT slash cardfolders slash folder underscore id — update. Calls verify underscore user first, then verify underscore folder underscore ownership. Not the owner? 403 Forbidden. You cannot edit someone else's folder.</p>
+
+<p>DELETE slash cardfolders slash folder underscore id — delete with cascades. Same ownership check. If you delete a folder, all its card sets are destroyed, and all the cards inside those sets are destroyed. The cascade chain we designed in Section III.</p>
+
+<p>❒ Card set router — seven endpoints. This is the biggest router. Let's take them in logical groups.</p>
+
+<p>Let's start with creation and retrieval of your own stuff. POST slash cardsets — create a card set. Two verifications before anything happens: the requesting user must exist, AND the parent folder must exist and belong to that user. You can't create a card set inside someone else's folder.</p>
+
+<p>GET slash cardsets slash my — all your card sets. Simple filter on user underscore id.</p>
+
+<p>❒ Now the public and visibility endpoints — this is where it gets interesting.</p>
+
+<p>GET slash cardsets slash public — returns everything where is underscore public is true. No authentication required. Anyone — even an anonymous client with no header — can browse public sets.</p>
+
+<p>GET slash cardsets slash cardset underscore id — get one specific card set. And this is where the visibility logic kicks in. Notice something about the header: it's optional here. Header with default equals None. Why?</p>
+
+<p>❒ Because a public set should be viewable by anyone?</p>
+
+<p>Exactly. If the set is public — return it, no matter who's asking, even if there's no header at all. If the set is private — now we check. Is the requester the owner? If yes, return it. If no, or if there's no header — 403 Forbidden. The same endpoint handles both public and private access with a single piece of branching logic.</p>
+
+<p>❒ What about viewing card sets within a specific folder?</p>
+
+<p>GET slash cardsets slash folder slash folder underscore id — gets all card sets in a folder, but filtered. It fetches everything from that folder, then filters in Python: keep sets that are either public OR owned by the requesting user. You see your own stuff plus anything public. Other people's private sets are invisible.</p>
+
+<p>❒ Why filter in Python instead of in the database query?</p>
+
+<p>Pragmatic reason. Supabase's chained query API doesn't easily support OR conditions like "where is underscore public equals true OR user underscore id equals X." For small to medium datasets, fetching all and filtering in Python is perfectly fine. For massive datasets, you'd use a stored procedure or Supabase's or underscore filter method. But for this tutorial, in-memory filtering works.</p>
+
+<p>❒ Now the write operations — update and delete.</p>
+
+<p>PUT slash cardsets slash cardset underscore id — update, owner only. The usual ownership verification. And here's a crucial detail: the code uses model underscore dump with exclude underscore unset equals True.</p>
+
+<p>❒ What does that do?</p>
+
+<p>It solves a subtle but devastating problem. When the client sends an update, they might only want to change the name — nothing else. Without exclude underscore unset, every field the client didn't mention gets sent as None to the database, overwriting existing data. Your carefully written description? Gone. Your is underscore public flag? Reset to None.</p>
+
+<p>With exclude underscore unset equals True, only fields the client actually included in their request body get sent. "I didn't mention the description" means leave it unchanged. "I explicitly set the description to null" means clear it. The distinction matters, and model underscore dump handles it correctly.</p>
+
+<p>DELETE slash cardsets slash cardset underscore id — owner only, cascades to all cards inside.</p>
+
+<p>❒ Card router — six endpoints. Subsection G.</p>
+
+<p>POST slash cards — create a card. Verifies the user exists and owns the parent card set. Can't sneak cards into someone else's set. And here's a nice touch: if the client provides front underscore text underscore 1 but not front underscore audio underscore text underscore 1, the API automatically generates the audio text by calling a function we'll build in Section VII. Same for back text. The client gets TTS-ready text for free.</p>
+
+<p>❒ What about reading cards? How does visibility work at the card level?</p>
+
+<p>GET slash cards slash card underscore id — get one card. Card visibility is inherited from the parent card set. The endpoint looks up which set the card belongs to, checks whether that set is public. If it's public — anyone can see the card. If it's private — only the owner. Making a card set private hides all its cards automatically. No per-card flags needed.</p>
+
+<p>GET slash cards slash cardset slash cardset underscore id — get all cards in a set. Same visibility check, applied once to the parent set.</p>
+
+<p>❒ Now the update endpoint — this is where the audit trail happens, right?</p>
+
+<p>PUT slash cards slash card underscore id — update, owner only, plus audit trail. First, ownership verification through the two-step chain — fetch the card, verify the parent card set's owner. If the client changes the text but doesn't provide new audio text, it auto-regenerates. And then the two critical lines.</p>
+
+<p>Data bracket updated underscore at equals datetime dot now with timezone dot utc, then dot isoformat. That stamps the current UTC time as an ISO 8601 string — a format like "2025-03-15T14:30:00+00:00" that's unambiguous and machine-parseable across every language and system. UTC ensures every timestamp is in the same frame regardless of where the server runs.</p>
+
+<p>Data bracket updated underscore by equals x underscore user underscore id. Records who made the edit. Both fields from Python's built-in datetime module — no extra packages.</p>
+
+<p>❒ And the remaining two endpoints?</p>
+
+<p>DELETE slash cards slash card underscore id — owner only, two-step ownership chain.</p>
+
+<p>GET slash cards slash cardset slash cardset underscore id slash updates — this is the audit history view. Instead of returning full cards with all content fields, it returns a lightweight view — just id, cardset underscore id, updated underscore at, and updated underscore by. Think of it as a dashboard: which cards were recently modified, and by whom. The SELECT call requests only those specific columns — more efficient for this overview purpose.</p>
+
+<p>❒ Subsection H summarises key patterns across all routers. Let me pull them from the outline. Two authentication patterns — mandatory Header with ellipsis for write operations, optional Header with default for reads that allow public access. Consistent error codes — 401, 403, 404, 409, 422. Ownership enforcement on every single write operation: verify user, verify ownership, perform action. And visibility cascading from card set to cards. That's the entire endpoint layer.</p>
+
+<h3 id="section-vi-complete-code">SECTION VI — COMPLETE CODE</h3>
+
+<p><strong>File: <code>routers/user_router.py</code></strong></p>
+
+<pre><code class="language-python">from fastapi import APIRouter, HTTPException
+from models.user_models import UserCreate, UserResponse
+from database import supabase
+from typing import List
+
+router = APIRouter(
+    prefix=&quot;/users&quot;,
+    tags=[&quot;Users&quot;]
+)
+
+
+# ──────────────────────────────────────
+# ENDPOINT 1: Register a new user
+# ──────────────────────────────────────
+@router.post(&quot;/&quot;, response_model=UserResponse)
+def create_user(user: UserCreate):
+    # Check if username already exists
+    existing = supabase.table(&quot;users&quot;).select(&quot;id&quot;).eq(&quot;username&quot;, user.username).execute()
+    if existing.data:
+        raise HTTPException(status_code=409, detail=&quot;Username already taken&quot;)
+
+    # Check if email already exists
+    existing_email = supabase.table(&quot;users&quot;).select(&quot;id&quot;).eq(&quot;email&quot;, user.email).execute()
+    if existing_email.data:
+        raise HTTPException(status_code=409, detail=&quot;Email already registered&quot;)
+
+    data = user.model_dump()
+    result = supabase.table(&quot;users&quot;).insert(data).execute()
+
+    if not result.data:
+        raise HTTPException(status_code=400, detail=&quot;Failed to create user&quot;)
+
+    return result.data[0]
+
+
+# ──────────────────────────────────────
+# ENDPOINT 2: Get all users
+# ──────────────────────────────────────
+@router.get(&quot;/&quot;, response_model=List[UserResponse])
+def get_all_users():
+    result = supabase.table(&quot;users&quot;).select(&quot;*&quot;).execute()
+    return result.data
+
+
+# ──────────────────────────────────────
+# ENDPOINT 3: Get one user by ID
+# ──────────────────────────────────────
+@router.get(&quot;/{user_id}&quot;, response_model=UserResponse)
+def get_user(user_id: str):
+    result = supabase.table(&quot;users&quot;).select(&quot;*&quot;).eq(&quot;id&quot;, user_id).execute()
+
+    if not result.data:
+        raise HTTPException(status_code=404, detail=&quot;User not found&quot;)
+
+    return result.data[0]</code></pre>
+<strong>File: <code>routers/cardfolder_router.py</code></strong>
+
+<pre><code class="language-python">from fastapi import APIRouter, HTTPException, Header
+from models.cardfolder_models import CardfolderCreate, CardfolderResponse
+from database import supabase
+from typing import List
+
+router = APIRouter(
+    prefix=&quot;/cardfolders&quot;,
+    tags=[&quot;Card Folders&quot;]
+)
+
+
+# ──────────────────────────────────────────────────────────────
+# HELPER: Verify the requesting user exists in the database
+# ──────────────────────────────────────────────────────────────
+def verify_user(user_id: str):
+    result = supabase.table(&quot;users&quot;).select(&quot;id&quot;).eq(&quot;id&quot;, user_id).execute()
+    if not result.data:
+        raise HTTPException(status_code=401, detail=&quot;User not found — invalid x-user-id header&quot;)
+
+
+# ──────────────────────────────────────────────────────────────
+# HELPER: Verify the requesting user owns the given folder
+# ──────────────────────────────────────────────────────────────
+def verify_folder_ownership(folder_id: str, user_id: str):
+    result = supabase.table(&quot;cardfolders&quot;).select(&quot;*&quot;).eq(&quot;id&quot;, folder_id).execute()
+    if not result.data:
+        raise HTTPException(status_code=404, detail=&quot;Folder not found&quot;)
+    folder = result.data[0]
+    if folder[&quot;user_id&quot;] != user_id:
+        raise HTTPException(status_code=403, detail=&quot;You do not own this folder&quot;)
+    return folder
+
+
+# ──────────────────────────────────────
+# ENDPOINT 1: Create a new folder
+# ──────────────────────────────────────
+@router.post(&quot;/&quot;, response_model=CardfolderResponse)
+def create_cardfolder(folder: CardfolderCreate, x_user_id: str = Header(...)):
+    verify_user(x_user_id)
+
+    data = folder.model_dump()
+    data[&quot;user_id&quot;] = x_user_id  # Set the owner to the requesting user
+
+    result = supabase.table(&quot;cardfolders&quot;).insert(data).execute()
+
+    if not result.data:
+        raise HTTPException(status_code=400, detail=&quot;Failed to create folder&quot;)
+
+    return result.data[0]
+
+
+# ──────────────────────────────────────────
+# ENDPOINT 2: Get all folders owned by me
+# ──────────────────────────────────────────
+@router.get(&quot;/my&quot;, response_model=List[CardfolderResponse])
+def get_my_cardfolders(x_user_id: str = Header(...)):
+    verify_user(x_user_id)
+    result = supabase.table(&quot;cardfolders&quot;).select(&quot;*&quot;).eq(&quot;user_id&quot;, x_user_id).execute()
+    return result.data
+
+
+# ──────────────────────────────────────
+# ENDPOINT 3: Get one folder by ID
+# ──────────────────────────────────────
+@router.get(&quot;/{folder_id}&quot;, response_model=CardfolderResponse)
+def get_cardfolder(folder_id: str):
+    result = supabase.table(&quot;cardfolders&quot;).select(&quot;*&quot;).eq(&quot;id&quot;, folder_id).execute()
+
+    if not result.data:
+        raise HTTPException(status_code=404, detail=&quot;Folder not found&quot;)
+
+    return result.data[0]
+
+
+# ──────────────────────────────────────────
+# ENDPOINT 4: Update a folder (owner only)
+# ──────────────────────────────────────────
+@router.put(&quot;/{folder_id}&quot;, response_model=CardfolderResponse)
+def update_cardfolder(folder_id: str, folder: CardfolderCreate, x_user_id: str = Header(...)):
+    verify_user(x_user_id)
+    verify_folder_ownership(folder_id, x_user_id)
+
+    data = folder.model_dump()
+    result = supabase.table(&quot;cardfolders&quot;).update(data).eq(&quot;id&quot;, folder_id).execute()
+
+    if not result.data:
+        raise HTTPException(status_code=400, detail=&quot;Failed to update folder&quot;)
+
+    return result.data[0]
+
+
+# ──────────────────────────────────────────
+# ENDPOINT 5: Delete a folder (owner only)
+# ──────────────────────────────────────────
+@router.delete(&quot;/{folder_id}&quot;)
+def delete_cardfolder(folder_id: str, x_user_id: str = Header(...)):
+    verify_user(x_user_id)
+    verify_folder_ownership(folder_id, x_user_id)
+
+    result = supabase.table(&quot;cardfolders&quot;).delete().eq(&quot;id&quot;, folder_id).execute()
+
+    if not result.data:
+        raise HTTPException(status_code=404, detail=&quot;Folder not found&quot;)
+
+    return {&quot;message&quot;: &quot;Folder deleted successfully&quot;, &quot;deleted&quot;: result.data[0]}</code></pre>
+<strong>File: <code>routers/cardset_router.py</code></strong>
+
+<pre><code class="language-python">from fastapi import APIRouter, HTTPException, Header
+from models.cardset_models import CardsetCreate, CardsetUpdate, CardsetResponse
+from database import supabase
+from typing import List
+
+router = APIRouter(
+    prefix=&quot;/cardsets&quot;,
+    tags=[&quot;Card Sets&quot;]
+)
+
+
+# ──────────────────────────────────────────────────────────────
+# HELPER: Verify the requesting user exists in the database
+# ──────────────────────────────────────────────────────────────
+def verify_user(user_id: str):
+    result = supabase.table(&quot;users&quot;).select(&quot;id&quot;).eq(&quot;id&quot;, user_id).execute()
+    if not result.data:
+        raise HTTPException(status_code=401, detail=&quot;User not found — invalid x-user-id header&quot;)
+
+
+# ──────────────────────────────────────────────────────────────
+# HELPER: Verify the requesting user owns the given card set
+# Returns the card set data if ownership is confirmed
+# ──────────────────────────────────────────────────────────────
+def verify_ownership(cardset_id: str, user_id: str):
+    result = supabase.table(&quot;cardsets&quot;).select(&quot;*&quot;).eq(&quot;id&quot;, cardset_id).execute()
+    if not result.data:
+        raise HTTPException(status_code=404, detail=&quot;Card set not found&quot;)
+    cardset = result.data[0]
+    if cardset[&quot;user_id&quot;] != user_id:
+        raise HTTPException(status_code=403, detail=&quot;You do not own this card set&quot;)
+    return cardset
+
+
+# ──────────────────────────────────────
+# ENDPOINT 1: Create a new card set
+# ──────────────────────────────────────
+@router.post(&quot;/&quot;, response_model=CardsetResponse)
+def create_cardset(cardset: CardsetCreate, x_user_id: str = Header(...)):
+    verify_user(x_user_id)
+
+    # Verify the parent folder exists and belongs to this user
+    folder_check = supabase.table(&quot;cardfolders&quot;).select(&quot;*&quot;).eq(&quot;id&quot;, cardset.cardfolder_id).execute()
+    if not folder_check.data:
+        raise HTTPException(status_code=404, detail=&quot;Parent folder not found&quot;)
+    if folder_check.data[0][&quot;user_id&quot;] != x_user_id:
+        raise HTTPException(status_code=403, detail=&quot;You do not own the parent folder&quot;)
+
+    data = cardset.model_dump()
+    data[&quot;user_id&quot;] = x_user_id  # Set the owner to the requesting user
+
+    result = supabase.table(&quot;cardsets&quot;).insert(data).execute()
+
+    if not result.data:
+        raise HTTPException(status_code=400, detail=&quot;Failed to create card set&quot;)
+
+    return result.data[0]
+
+
+# ──────────────────────────────────────────
+# ENDPOINT 2: Get all card sets owned by me
+# ──────────────────────────────────────────
+@router.get(&quot;/my&quot;, response_model=List[CardsetResponse])
+def get_my_cardsets(x_user_id: str = Header(...)):
+    verify_user(x_user_id)
+    result = supabase.table(&quot;cardsets&quot;).select(&quot;*&quot;).eq(&quot;user_id&quot;, x_user_id).execute()
+    return result.data
+
+
+# ──────────────────────────────────────────
+# ENDPOINT 3: Get all public card sets
+# ──────────────────────────────────────────
+@router.get(&quot;/public&quot;, response_model=List[CardsetResponse])
+def get_public_cardsets():
+    result = supabase.table(&quot;cardsets&quot;).select(&quot;*&quot;).eq(&quot;is_public&quot;, True).execute()
+    return result.data
+
+
+# ──────────────────────────────────────────────────────────
+# ENDPOINT 4: Get one card set by ID (visibility enforced)
+# ──────────────────────────────────────────────────────────
+@router.get(&quot;/{cardset_id}&quot;, response_model=CardsetResponse)
+def get_cardset(cardset_id: str, x_user_id: str = Header(default=None)):
+    result = supabase.table(&quot;cardsets&quot;).select(&quot;*&quot;).eq(&quot;id&quot;, cardset_id).execute()
+
+    if not result.data:
+        raise HTTPException(status_code=404, detail=&quot;Card set not found&quot;)
+
+    cardset = result.data[0]
+
+    # If the set is private, only the owner can see it
+    if not cardset[&quot;is_public&quot;] and cardset[&quot;user_id&quot;] != x_user_id:
+        raise HTTPException(status_code=403, detail=&quot;This card set is private&quot;)
+
+    return cardset
+
+
+# ──────────────────────────────────────────────────────────────────
+# ENDPOINT 5: Get card sets in a folder (visibility enforced)
+# ──────────────────────────────────────────────────────────────────
+@router.get(&quot;/folder/{folder_id}&quot;, response_model=List[CardsetResponse])
+def get_cardsets_by_folder(folder_id: str, x_user_id: str = Header(default=None)):
+    result = supabase.table(&quot;cardsets&quot;).select(&quot;*&quot;).eq(&quot;cardfolder_id&quot;, folder_id).execute()
+
+    # Filter: show public sets + sets owned by the requesting user
+    visible = []
+    for cs in result.data:
+        if cs[&quot;is_public&quot;] or cs[&quot;user_id&quot;] == x_user_id:
+            visible.append(cs)
+
+    return visible
+
+
+# ──────────────────────────────────────────────
+# ENDPOINT 6: Update a card set (owner only)
+# ──────────────────────────────────────────────
+@router.put(&quot;/{cardset_id}&quot;, response_model=CardsetResponse)
+def update_cardset(cardset_id: str, cardset: CardsetUpdate, x_user_id: str = Header(...)):
+    verify_user(x_user_id)
+    verify_ownership(cardset_id, x_user_id)
+
+    data = cardset.model_dump(exclude_unset=True)
+
+    if not data:
+        raise HTTPException(status_code=400, detail=&quot;No fields to update&quot;)
+
+    result = supabase.table(&quot;cardsets&quot;).update(data).eq(&quot;id&quot;, cardset_id).execute()
+
+    if not result.data:
+        raise HTTPException(status_code=400, detail=&quot;Failed to update card set&quot;)
+
+    return result.data[0]
+
+
+# ──────────────────────────────────────────────
+# ENDPOINT 7: Delete a card set (owner only)
+# ──────────────────────────────────────────────
+@router.delete(&quot;/{cardset_id}&quot;)
+def delete_cardset(cardset_id: str, x_user_id: str = Header(...)):
+    verify_user(x_user_id)
+    verify_ownership(cardset_id, x_user_id)
+
+    result = supabase.table(&quot;cardsets&quot;).delete().eq(&quot;id&quot;, cardset_id).execute()
+
+    if not result.data:
+        raise HTTPException(status_code=404, detail=&quot;Card set not found&quot;)
+
+    return {&quot;message&quot;: &quot;Card set deleted successfully&quot;, &quot;deleted&quot;: result.data[0]}</code></pre>
+<strong>File: <code>routers/card_router.py</code></strong>
+
+<pre><code class="language-python">from fastapi import APIRouter, HTTPException, Header
+from models.card_models import CardCreate, CardUpdate, CardResponse
+from database import supabase
+from utils.audio_text import generate_audio_text
+from typing import List
+from datetime import datetime, timezone
+
+router = APIRouter(
+    prefix=&quot;/cards&quot;,
+    tags=[&quot;Cards&quot;]
+)
+
+
+# ──────────────────────────────────────────────────────────────
+# HELPER: Verify user exists
+# ──────────────────────────────────────────────────────────────
+def verify_user(user_id: str):
+    result = supabase.table(&quot;users&quot;).select(&quot;id&quot;).eq(&quot;id&quot;, user_id).execute()
+    if not result.data:
+        raise HTTPException(status_code=401, detail=&quot;User not found — invalid x-user-id header&quot;)
+
+
+# ──────────────────────────────────────────────────────────────
+# HELPER: Verify the requesting user owns the card set
+# that a card belongs to (or will belong to)
+# ──────────────────────────────────────────────────────────────
+def verify_cardset_ownership(cardset_id: str, user_id: str):
+    result = supabase.table(&quot;cardsets&quot;).select(&quot;*&quot;).eq(&quot;id&quot;, cardset_id).execute()
+    if not result.data:
+        raise HTTPException(status_code=404, detail=&quot;Parent card set not found&quot;)
+    if result.data[0][&quot;user_id&quot;] != user_id:
+        raise HTTPException(status_code=403, detail=&quot;You do not own the parent card set&quot;)
+    return result.data[0]
+
+
+# ──────────────────────────────────────────────────────────────
+# HELPER: Given a card ID, look up which cardset it belongs to
+# and verify ownership. Returns the card data.
+# ──────────────────────────────────────────────────────────────
+def get_card_and_verify_ownership(card_id: str, user_id: str):
+    card_result = supabase.table(&quot;cards&quot;).select(&quot;*&quot;).eq(&quot;id&quot;, card_id).execute()
+    if not card_result.data:
+        raise HTTPException(status_code=404, detail=&quot;Card not found&quot;)
+    card = card_result.data[0]
+    verify_cardset_ownership(card[&quot;cardset_id&quot;], user_id)
+    return card
+
+
+# ──────────────────────────────────────
+# ENDPOINT 1: Create a new card
+# ──────────────────────────────────────
+@router.post(&quot;/&quot;, response_model=CardResponse)
+def create_card(card: CardCreate, x_user_id: str = Header(...)):
+    verify_user(x_user_id)
+    verify_cardset_ownership(card.cardset_id, x_user_id)
+
+    data = card.model_dump()
+
+    # Auto-generate audio text if not provided
+    if data.get(&quot;front_text_1&quot;) and not data.get(&quot;front_audio_text_1&quot;):
+        data[&quot;front_audio_text_1&quot;] = generate_audio_text(data[&quot;front_text_1&quot;])
+
+    if data.get(&quot;back_text_1&quot;) and not data.get(&quot;back_audio_text_1&quot;):
+        data[&quot;back_audio_text_1&quot;] = generate_audio_text(data[&quot;back_text_1&quot;])
+
+    result = supabase.table(&quot;cards&quot;).insert(data).execute()
+
+    if not result.data:
+        raise HTTPException(status_code=400, detail=&quot;Failed to create card&quot;)
+
+    return result.data[0]
+
+
+# ──────────────────────────────────────
+# ENDPOINT 2: Get one card by ID
+# ──────────────────────────────────────
+@router.get(&quot;/{card_id}&quot;, response_model=CardResponse)
+def get_card(card_id: str, x_user_id: str = Header(default=None)):
+    card_result = supabase.table(&quot;cards&quot;).select(&quot;*&quot;).eq(&quot;id&quot;, card_id).execute()
+    if not card_result.data:
+        raise HTTPException(status_code=404, detail=&quot;Card not found&quot;)
+
+    card = card_result.data[0]
+
+    # Check visibility of the parent card set
+    cardset = supabase.table(&quot;cardsets&quot;).select(&quot;*&quot;).eq(&quot;id&quot;, card[&quot;cardset_id&quot;]).execute()
+    if cardset.data:
+        cs = cardset.data[0]
+        if not cs[&quot;is_public&quot;] and cs[&quot;user_id&quot;] != x_user_id:
+            raise HTTPException(status_code=403, detail=&quot;This card belongs to a private card set&quot;)
+
+    return card
+
+
+# ────────────────────────────────────────────────────────────────
+# ENDPOINT 3: Get all cards in a card set (visibility enforced)
+# ────────────────────────────────────────────────────────────────
+@router.get(&quot;/cardset/{cardset_id}&quot;, response_model=List[CardResponse])
+def get_cards_by_cardset(cardset_id: str, x_user_id: str = Header(default=None)):
+    # Check that the card set exists and is visible
+    cs_result = supabase.table(&quot;cardsets&quot;).select(&quot;*&quot;).eq(&quot;id&quot;, cardset_id).execute()
+    if not cs_result.data:
+        raise HTTPException(status_code=404, detail=&quot;Card set not found&quot;)
+
+    cs = cs_result.data[0]
+    if not cs[&quot;is_public&quot;] and cs[&quot;user_id&quot;] != x_user_id:
+        raise HTTPException(status_code=403, detail=&quot;This card set is private&quot;)
+
+    result = supabase.table(&quot;cards&quot;).select(&quot;*&quot;).eq(&quot;cardset_id&quot;, cardset_id).execute()
+    return result.data
+
+
+# ──────────────────────────────────────────────────────────────────
+# ENDPOINT 4: Update a card (owner only, writes audit fields)
+# ──────────────────────────────────────────────────────────────────
+@router.put(&quot;/{card_id}&quot;, response_model=CardResponse)
+def update_card(card_id: str, card: CardUpdate, x_user_id: str = Header(...)):
+    verify_user(x_user_id)
+    get_card_and_verify_ownership(card_id, x_user_id)
+
+    data = card.model_dump(exclude_unset=True)
+
+    # Regenerate audio text if display text changed but audio text not explicitly set
+    if &quot;front_text_1&quot; in data and &quot;front_audio_text_1&quot; not in data:
+        if data[&quot;front_text_1&quot;] is not None:
+            data[&quot;front_audio_text_1&quot;] = generate_audio_text(data[&quot;front_text_1&quot;])
+        else:
+            data[&quot;front_audio_text_1&quot;] = None
+
+    if &quot;back_text_1&quot; in data and &quot;back_audio_text_1&quot; not in data:
+        if data[&quot;back_text_1&quot;] is not None:
+            data[&quot;back_audio_text_1&quot;] = generate_audio_text(data[&quot;back_text_1&quot;])
+        else:
+            data[&quot;back_audio_text_1&quot;] = None
+
+    if not data:
+        raise HTTPException(status_code=400, detail=&quot;No fields to update&quot;)
+
+    # ── AUDIT TRAIL: Write update timestamp and user ──
+    data[&quot;updated_at&quot;] = datetime.now(timezone.utc).isoformat()
+    data[&quot;updated_by&quot;] = x_user_id
+
+    result = supabase.table(&quot;cards&quot;).update(data).eq(&quot;id&quot;, card_id).execute()
+
+    if not result.data:
+        raise HTTPException(status_code=400, detail=&quot;Failed to update card&quot;)
+
+    return result.data[0]
+
+
+# ──────────────────────────────────────────────
+# ENDPOINT 5: Delete a card (owner only)
+# ──────────────────────────────────────────────
+@router.delete(&quot;/{card_id}&quot;)
+def delete_card(card_id: str, x_user_id: str = Header(...)):
+    verify_user(x_user_id)
+    get_card_and_verify_ownership(card_id, x_user_id)
+
+    result = supabase.table(&quot;cards&quot;).delete().eq(&quot;id&quot;, card_id).execute()
+
+    if not result.data:
+        raise HTTPException(status_code=404, detail=&quot;Card not found&quot;)
+
+    return {&quot;message&quot;: &quot;Card deleted successfully&quot;, &quot;deleted&quot;: result.data[0]}
+
+
+# ──────────────────────────────────────────────────────────────────────
+# ENDPOINT 6: Get update history for all cards in a card set
+# Shows each card&#x27;s last update timestamp and who updated it
+# ──────────────────────────────────────────────────────────────────────
+@router.get(&quot;/cardset/{cardset_id}/updates&quot;)
+def get_card_updates(cardset_id: str, x_user_id: str = Header(default=None)):
+    # Visibility check
+    cs_result = supabase.table(&quot;cardsets&quot;).select(&quot;*&quot;).eq(&quot;id&quot;, cardset_id).execute()
+    if not cs_result.data:
+        raise HTTPException(status_code=404, detail=&quot;Card set not found&quot;)
+
+    cs = cs_result.data[0]
+    if not cs[&quot;is_public&quot;] and cs[&quot;user_id&quot;] != x_user_id:
+        raise HTTPException(status_code=403, detail=&quot;This card set is private&quot;)
+
+    result = supabase.table(&quot;cards&quot;).select(
+        &quot;id, front_text_1, back_text_1, created_at, updated_at, updated_by&quot;
+    ).eq(&quot;cardset_id&quot;, cardset_id).execute()
+
+    return result.data</code></pre>
+<hr>
+<h2 id="section-vii-audio-text-generation-with-regular-expressions">SECTION VII — AUDIO TEXT GENERATION WITH REGULAR EXPRESSIONS</h2>
+
+<hr>
+❒ Section VII — audio text generation. We mentioned earlier that display text and speech text are different. Let me understand the problem concretely.
+
+<p>Take a flashcard for learning Spanish. On screen, it shows: "El gato (the cat) [m.]" That's perfectly clear visually. "El gato" is the word. "(the cat)" is the English translation hint. "[m.]" tells you it's masculine. A human reader processes these three pieces instantly.</p>
+
+<p>Now send that text to a text-to-speech engine. TTS engines read literally — every character, every punctuation mark. What you hear is: "El gato open parenthesis the cat close parenthesis open bracket m period close bracket." Unintelligible. Useless for language learning.</p>
+
+<p>❒ So we need to strip out the visual formatting and keep just the speakable part.</p>
+
+<p>Exactly. "El gato (the cat) [m.]" needs to become "El gato." Clean, natural, ready for speech. And we need to do this automatically, because asking users to manually create audio-friendly text for every card defeats the purpose.</p>
+
+<p>❒ What tool do we use?</p>
+
+<p>Regular expressions — regex. Specifically, Python's re dot sub function. If you haven't used regex before, here's the idea: instead of searching for a specific string like "find the word cat," a regex describes a pattern — like "find anything between square brackets." Python's re module provides the functions, and re dot sub is for substitution. Three arguments: the pattern to find, the replacement — often an empty string, which effectively deletes the match — and the text to search within. Returns a new string.</p>
+
+<p>❒ The outline lists five transformation rules in subsection C, applied in a specific order. Why does order matter?</p>
+
+<p>Because each rule leaves behind artifacts that later rules clean up. If you run the cleanup step first, it has nothing to clean — and then the other rules create new messes. The sequence is deliberate. Let me walk through each rule, and then we'll trace a complete example.</p>
+
+<p>❒ Rule one.</p>
+
+<p>Remove square bracket content. The pattern backslash bracket dot star question mark backslash bracket matches an opening bracket, then any characters — as few as possible — then a closing bracket. Replace with empty string. "El gato [m.]" becomes "El gato" with a trailing space where the brackets were.</p>
+
+<p>❒ Hold on — "as few as possible." What's the question mark doing?</p>
+
+<p>This is the greedy versus non-greedy distinction, and it's critical. By default, regex is greedy — dot star matches as many characters as possible. If your text is "[one] word [two]" and you use a greedy pattern, it matches from the first opening bracket all the way to the last closing bracket — "[one] word [two]" as a single match. The word between them gets swallowed.</p>
+
+<p>The question mark makes it non-greedy — match as few characters as possible. Now it matches "[one]" first, then "[two]" separately. The word between is preserved. For flashcards that might have multiple bracketed annotations, non-greedy is essential.</p>
+
+<p>❒ Rule two.</p>
+
+<p>Remove parenthetical content. Same approach, same non-greedy matching. "El gato (the cat)" becomes "El gato" with a trailing space.</p>
+
+<p>❒ Rule three — this one's different.</p>
+
+<p>Right. Language flashcards sometimes show alternatives with a slash — "rojo/a" meaning the masculine form "rojo" or the feminine form "roja." For audio, we want only the first form.</p>
+
+<p>This rule uses a capture group. Parentheses in the regex capture a portion of the match. The pattern is backslash w plus — that's one or more word characters — inside parentheses to capture it, then a slash, then another backslash w plus. The replacement is backslash 1 — a backreference meaning "put back whatever was in the first capture group."</p>
+
+<p>❒ Wait — how does Python handle that backslash 1?</p>
+
+<p>In Python, you write it as r backslash 1 — with an r prefix making it a raw string. And this matters. Without the r prefix, Python's string parser would interpret backslash 1 as a special character — specifically, the character with ASCII value 1 — before the regex engine ever sees it. The raw string prefix tells Python to pass the backslash through untouched. The regex engine receives the literal backslash 1 and interprets it as a backreference. Two different layers of interpretation — you need the raw string to bypass the first one.</p>
+
+<p>So "rojo/a" becomes "rojo." The first form is kept, the slash and everything after it is discarded.</p>
+
+<p>❒ Rule four.</p>
+
+<p>Remove leading numbers. Matches digits followed by a dot at the start of the string. "3. El gato" becomes "El gato" with a leading space.</p>
+
+<p>❒ And rule five — the cleanup.</p>
+
+<p>This must be last. Every previous rule removed content but left gaps — extra spaces where brackets, parentheses, slashes, and numbers used to be. Rule five collapses multiple consecutive spaces into a single space and strips leading and trailing whitespace. If you ran this earlier, the gaps from subsequent rules would remain uncleaned.</p>
+
+<p>❒ Let's trace the complete example from the outline. Subsection D has a table — I'm looking at it now.</p>
+
+<p>Input: "3. El gato rojo/a (the red cat) [m./f.]"</p>
+
+<p>After rule one — brackets gone: "3. El gato rojo/a (the red cat)" with trailing space.</p>
+
+<p>After rule two — parentheses gone: "3. El gato rojo/a" with extra spaces.</p>
+
+<p>After rule three — slash simplified: "3. El gato rojo" with extra spaces.</p>
+
+<p>After rule four — leading number gone: "El gato rojo" with leading and extra spaces.</p>
+
+<p>After rule five — whitespace cleaned: "El gato rojo."</p>
+
+<p>Clean, natural, ready for TTS. From a visually rich flashcard string to a speakable sentence, automatically.</p>
+
+<p>❒ How does this integrate with the card router?</p>
+
+<p>The function is called automatically when a client provides display text — front underscore text underscore 1 or back underscore text underscore 1 — but does not provide the corresponding audio text field. If they don't supply front underscore audio underscore text underscore 1, the API generates it. If they do supply it — their explicit value takes priority. Auto-generation is a default, not a mandate.</p>
+
+<p>And it's extensible. Adding a new rule is just another re dot sub line at the appropriate position — keeping the whitespace cleanup at the end.</p>
+
+<p>❒ Section summary from the outline: five rules in strict order, non-greedy matching prevents overmatching, capture groups and backreferences for partial replacement, whitespace cleanup last, auto-generation is automatic but overridable. Onto the final major feature.</p>
+
+<h3 id="section-vii-complete-code">SECTION VII — COMPLETE CODE</h3>
+
+<p><strong>File: <code>utils/audio_text.py</code></strong></p>
+
+<pre><code class="language-python">import re
+
+
+def generate_audio_text(display_text: str) -&gt; str:
+    &quot;&quot;&quot;
+    Transform display text into audio-friendly text by removing
+    annotations, hints, and formatting that would sound unnatural
+    when read aloud by a text-to-speech engine.
+
+    Rules applied in order:
+    1. Remove content in square brackets: [m.] [noun] [informal]
+    2. Remove content in parentheses: (the cat) (lit. house)
+    3. Simplify slash alternatives to first word: rojo/a -&gt; rojo
+    4. Remove leading numbering: 1. 2. 3.
+    5. Clean up whitespace
+    &quot;&quot;&quot;
+    text = display_text
+
+    # Rule 1: Remove square bracket content
+    # \[   matches a literal opening bracket
+    # .*?  matches any characters, non-greedy (as few as possible)
+    # \]   matches a literal closing bracket
+    text = re.sub(r&#x27;\[.*?\]&#x27;, &#x27;&#x27;, text)
+
+    # Rule 2: Remove parenthetical content
+    # \(   matches a literal opening parenthesis
+    # .*?  matches any characters, non-greedy
+    # \)   matches a literal closing parenthesis
+    text = re.sub(r&#x27;\(.*?\)&#x27;, &#x27;&#x27;, text)
+
+    # Rule 3: Simplify slash alternatives — keep only first word
+    # (\w+)  captures one or more word characters (the part we keep)
+    # /      matches a literal slash
+    # \w+    matches one or more word characters (the part we discard)
+    # \1     in the replacement refers to the first captured group
+    text = re.sub(r&#x27;(\w+)/\w+&#x27;, r&#x27;\1&#x27;, text)
+
+    # Rule 4: Remove leading numbering like &quot;1. &quot; or &quot;23. &quot;
+    # ^      anchors to the start of the string
+    # \d+    matches one or more digits
+    # \.     matches a literal dot
+    # \s*    matches zero or more whitespace characters
+    text = re.sub(r&#x27;^\d+\.\s*&#x27;, &#x27;&#x27;, text)
+
+    # Rule 5: Collapse multiple spaces into one
+    # \s+    matches one or more whitespace characters
+    text = re.sub(r&#x27;\s+&#x27;, &#x27; &#x27;, text)
+
+    # Final strip to remove leading/trailing whitespace
+    text = text.strip()
+
+    return text</code></pre>
+<hr>
+<h2 id="section-viii-public-sharing-and-the-copy-feature">SECTION VIII — PUBLIC SHARING AND THE COPY FEATURE</h2>
+
+<hr>
+❒ Section VIII — the copy feature. We've built public visibility. We've built ownership. Now what happens when those two collide? A student finds a great public card set but can't do anything with it except look.
+
+<p>Exactly the problem. Picture this — and the outline has this scenario in subsection A. A Spanish teacher spends hours building "DELE B2 Vocabulary" — 200 carefully crafted cards with audio text, image URLs, everything polished. She marks it public. Students find it, love it. But a student wants to personalise — add notes, tweak translations, remove cards they already know, maybe rearrange.</p>
+
+<p>The student can't edit the original. They're not the owner. But even if we gave them permission — think about what happens. Their changes affect every other student using the same set. One person's customisation destroys the experience for everyone else.</p>
+
+<p>❒ So we need a way to create a personal copy.</p>
+
+<p>A deep copy. Not just the card set metadata — every single card inside, duplicated into the student's own account. Their copy, their property, completely independent from the original. The teacher's set untouched.</p>
+
+<p>❒ The outline describes a five-step process in subsection B. Walk me through it.</p>
+
+<p>Step one — verify the source card set exists and is accessible. It must be either public or owned by the requester. Yes, you can copy your own sets — useful for creating variations.</p>
+
+<p>Step two — the user specifies a target folder via a query parameter called target underscore folder underscore id. That folder must exist and must belong to the requesting user. You can't copy into someone else's folder.</p>
+
+<p>Step three — create a new card set record. Name is "Copy of" followed by the original name. Owner is the requester. Folder is the target folder. Is underscore public is false — your copy starts private.</p>
+
+<p>Step four — fetch all cards from the source card set.</p>
+
+<p>Step five — duplicate every card into the new set.</p>
+
+<p>❒ What exactly gets preserved, and what starts fresh?</p>
+
+<p>If you look at the table in your outline — subsection B point two — there's a clear split. Preserved exactly: all eight content fields. Front text, front audio text, front audio, front image, and the same four for back. The educational content crosses over perfectly.</p>
+
+<p>Starting fresh: the id — each card gets a new UUID. The cardset underscore id — points to the new set, not the original. Created underscore at — set to now by the database. Updated underscore at — null, because this copied card has never been edited, only created. Updated underscore by — null, no edits have occurred.</p>
+
+<p>❒ The endpoint itself — what does the URL look like?</p>
+
+<p>POST slash cardsets slash cardset underscore id slash copy, with target underscore folder underscore id as a query parameter. POST because we're creating new data. The cardset underscore id in the URL is the source. The query parameter tells us where the copy goes.</p>
+
+<p>❒ The outline mentions a defensive programming pattern — dot get versus bracket access. What's that about?</p>
+
+<p>When reading fields from the source cards to build the copies, the code uses card dot get with the field name instead of bracket access. If a field doesn't exist or isn't populated — which is valid, not every card has all eight fields — dot get returns None gracefully. Bracket access would crash with a KeyError. It's defensive: handle partial data without special-casing each field.</p>
+
+<p>❒ And there's a performance consideration?</p>
+
+<p>A big one. Instead of inserting cards one by one — one database call per card — all the new cards are collected in a list and inserted with a single call. Supabase's insert method accepts a list of dictionaries. Copying 200 cards? One network call, not 200. Over a network with any latency at all, that's the difference between a fraction of a second and an unacceptable wait.</p>
+
+<p>❒ The outline has a full end-to-end test scenario in subsection D. Can we walk through it? I want to see the whole system working together.</p>
+
+<p>Let's trace it. Two users, two folders, and we'll watch ownership, visibility, copying, and audit trails all interact.</p>
+
+<p>First, we register two users. Teacher underscore ana and student underscore bob. Each gets a user ID back. Then teacher creates a folder called "Languages," student creates "My Studies."</p>
+
+<p>Now teacher creates a card set called "Spanish Basics" inside her Languages folder, with is underscore public set to true. She creates a card — front text "El gato (the cat) [m.]," back text "The cat." The API auto-generates the audio text: "El gato." All the regex rules we just discussed, working automatically.</p>
+
+<p>❒ Now the student enters the picture.</p>
+
+<p>The student calls GET slash cardsets slash public — no header needed. There's "Spanish Basics" in the results. The student copies it: POST slash cardsets slash the teacher's set ID slash copy, with target folder set to the student's "My Studies" folder. Response: "Copy of Spanish Basics," owned by the student, private.</p>
+
+<p>❒ And now the student can personalise it.</p>
+
+<p>The student calls GET slash cardsets slash my — "Copy of Spanish Basics" appears. Gets all the cards from the new set. Picks one and updates it — changes front text to "El gato gordo (the fat cat)." The API stamps updated underscore at with the current timestamp, updated underscore by with the student's ID. And it auto-regenerates the audio text as "El gato gordo."</p>
+
+<p>❒ Here's the critical test — is the teacher's original untouched?</p>
+
+<p>GET the cards from the original set. Every single card is exactly as the teacher left it. No modifications, no timestamps, no sign that a copy ever happened. The two sets are completely independent.</p>
+
+<p>And if the student tries to directly edit one of the teacher's cards? PUT on the teacher's card ID with the student's header in place. 403 Forbidden: "You do not own the parent card set." The ownership system works exactly as designed.</p>
+
+<p>❒ Let me read the section summary in the outline... deep copy, content preserved, metadata fresh, only public or owned sets copyable, target folder must be yours, batch insert for performance, complete independence. That's a proper multi-user platform. One more section to go.</p>
+
+<h3 id="section-viii-complete-code">SECTION VIII — COMPLETE CODE</h3>
+
+<p><strong>Add to <code>routers/cardset_router.py</code> — the copy endpoint (add this import at the top alongside existing imports):</strong></p>
+
+<pre><code class="language-python">from utils.audio_text import generate_audio_text</code></pre>
+<strong>Then add the endpoint at the bottom of the file:</strong>
+
+<pre><code class="language-python"># ──────────────────────────────────────────────────────────────────
+# ENDPOINT 8: Copy a public card set into your own account
+# ──────────────────────────────────────────────────────────────────
+@router.post(&quot;/{cardset_id}/copy&quot;, response_model=CardsetResponse)
+def copy_cardset(cardset_id: str, target_folder_id: str, x_user_id: str = Header(...)):
+    verify_user(x_user_id)
+
+    # Step 1: Fetch the source card set and verify it is accessible
+    source_result = supabase.table(&quot;cardsets&quot;).select(&quot;*&quot;).eq(&quot;id&quot;, cardset_id).execute()
+    if not source_result.data:
+        raise HTTPException(status_code=404, detail=&quot;Card set not found&quot;)
+
+    source = source_result.data[0]
+
+    # Allow copy if: the set is public, OR the requester is the owner
+    if not source[&quot;is_public&quot;] and source[&quot;user_id&quot;] != x_user_id:
+        raise HTTPException(
+            status_code=403,
+            detail=&quot;This card set is private and you are not the owner&quot;
+        )
+
+    # Step 2: Verify the target folder exists and belongs to the requesting user
+    folder_check = supabase.table(&quot;cardfolders&quot;).select(&quot;*&quot;).eq(&quot;id&quot;, target_folder_id).execute()
+    if not folder_check.data:
+        raise HTTPException(status_code=404, detail=&quot;Target folder not found&quot;)
+    if folder_check.data[0][&quot;user_id&quot;] != x_user_id:
+        raise HTTPException(status_code=403, detail=&quot;You do not own the target folder&quot;)
+
+    # Step 3: Create the new card set (owned by requesting user, private by default)
+    new_cardset_data = {
+        &quot;cardfolder_id&quot;: target_folder_id,
+        &quot;user_id&quot;: x_user_id,
+        &quot;name&quot;: f&quot;Copy of {source[&#x27;name&#x27;]}&quot;,
+        &quot;description&quot;: source.get(&quot;description&quot;),
+        &quot;is_public&quot;: False
+    }
+
+    new_cardset_result = supabase.table(&quot;cardsets&quot;).insert(new_cardset_data).execute()
+    if not new_cardset_result.data:
+        raise HTTPException(status_code=400, detail=&quot;Failed to create card set copy&quot;)
+
+    new_cardset = new_cardset_result.data[0]
+
+    # Step 4: Fetch all cards from the source card set
+    source_cards = supabase.table(&quot;cards&quot;).select(&quot;*&quot;).eq(&quot;cardset_id&quot;, cardset_id).execute()
+
+    # Step 5: Duplicate each card into the new card set
+    if source_cards.data:
+        new_cards = []
+        for card in source_cards.data:
+            new_card = {
+                &quot;cardset_id&quot;: new_cardset[&quot;id&quot;],
+                &quot;front_text_1&quot;: card.get(&quot;front_text_1&quot;),
+                &quot;front_audio_text_1&quot;: card.get(&quot;front_audio_text_1&quot;),
+                &quot;front_audio_1&quot;: card.get(&quot;front_audio_1&quot;),
+                &quot;front_image&quot;: card.get(&quot;front_image&quot;),
+                &quot;back_text_1&quot;: card.get(&quot;back_text_1&quot;),
+                &quot;back_audio_text_1&quot;: card.get(&quot;back_audio_text_1&quot;),
+                &quot;back_audio_1&quot;: card.get(&quot;back_audio_1&quot;),
+                &quot;back_image&quot;: card.get(&quot;back_image&quot;),
+            }
+            new_cards.append(new_card)
+
+        # Batch insert all cards at once for efficiency
+        supabase.table(&quot;cards&quot;).insert(new_cards).execute()
+
+    return new_cardset</code></pre>
+<hr>
+<h2 id="section-ix-final-summary">SECTION IX — FINAL SUMMARY</h2>
+
+<hr>
+❒ Section IX — the final summary. Let's take stock. What have we built?
+
+<p>If you look at subsection A in your outline, there's a table listing every file. Thirteen source files plus three init files. Dot env and dot gitignore for configuration. Database dot py for the Supabase connection. Main dot py as the orchestrator. Four model files, four router files, one audio text utility. Twenty-two endpoints plus one root health check.</p>
+
+<p>❒ And the multi-user features — subsection B has the complete list.</p>
+
+<p>Nine items. User registration and lookup. Folder ownership with cascading deletes. Card set ownership — same pattern. Ownership enforcement on every write operation across every entity. Public/private visibility through the is underscore public flag. Visibility filtering on every read operation. Card-level audit trail. Deep copy with batch duplication. Simplified authentication via the x-user-id header.</p>
+
+<p>❒ How do we actually run it?</p>
+
+<p>Three commands, and they're in your outline at subsection C. cd flashcard-api. workon vintel. uvicorn main colon app dash dash reload. Open localhost colon 8000 slash docs in your browser and every endpoint is there, interactive, testable.</p>
+
+<p>❒ The outline closes with four things to remember above all else. Let's end with those — they're in subsection D.</p>
+
+<p>First — the data hierarchy. Users, cardfolders, cardsets, cards. Ownership flows down from users. Visibility is controlled at the card set level and cascades to all cards within. Not at the folder level. Not at the card level. The card set level.</p>
+
+<p>Second — CASCADE versus SET NULL. CASCADE means the child can't exist without the parent — destroy them together. SET NULL means the reference is informational — clear it, but the child survives. Every foreign key in this project uses one or the other, and the choice is never arbitrary.</p>
+
+<p>Third — the API controls the audit trail, not the client. Updated underscore at and updated underscore by are set automatically by the server during updates. They never appear in Create or Update request bodies. No one can fake when or by whom an edit was made.</p>
+
+<p>Fourth — deep copy means complete independence. Content is preserved exactly. IDs, timestamps, audit fields all start fresh. Edits to the copy never affect the original. Edits to the original never affect the copy. Two independent objects that happen to have the same content at the moment of creation.</p>
+
+<p>❒ And that's the whole outline — nine sections, four database tables, twenty-two endpoints, a regex engine, and a multi-user platform. If you've been following along with the printed outline, every principle, every table, every bullet point has been discussed. Go back to any section that needs another pass. The outline and this podcast are built to work together.</p>
+
+<p>Thanks for sticking with us. Go build something.</p>
+</body>
+</html>
